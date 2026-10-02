@@ -15,7 +15,7 @@
     dummyMax:200, heroMax:200, hpPerBar:100, basicCooldownRefund:.05
   };
   const cooldownMax = { skill1:BALANCE.skill1.cooldown, skill2:BALANCE.skill2.cooldown, ultimate:BALANCE.ultimate.cooldown };
-  const skillNames = { skill1: 'AETHER BOLT', skill2: 'SEISMIC DRIVE', ultimate: 'HELIOS SQUADRON' };
+  const skillNames = window.GHOSTS?.arco ? { skill1: window.GHOSTS.arco.names[1], skill2: window.GHOSTS.arco.names[2], ultimate: window.GHOSTS.arco.names[3] } : { skill1: 'AETHER BOLT', skill2: 'SEISMIC DRIVE', ultimate: 'HELIOS SQUADRON' };
   const images = {}, F = window.Fenr, M = window.Mira && window.MIRA_MANIFEST ? window.Mira : null, C = window.Cora && window.CORA_MANIFEST ? window.Cora : null, N = window.Naja && window.NAJA_MANIFEST ? window.Naja : null, HD = window.Haldor && window.HALDOR_MANIFEST ? window.Haldor : null, Z = window.Zanni && window.ZANNI_MANIFEST ? window.Zanni : null, IS = window.Isolde && window.ISOLDE_MANIFEST ? window.Isolde : null, RH = window.Rhea && window.RHEA_MANIFEST ? window.Rhea : null, SO = window.Solan && window.SOLAN_MANIFEST ? window.Solan : null, NB = window.Nib && window.NIB_MANIFEST ? window.Nib : null, ED = window.Edda && window.EDDA_MANIFEST ? window.Edda : null;
   // Kits that share one start/move/refund contract (mira.js, cora.js, naja.js, haldor.js, zanni.js, isolde.js, rhea.js, solan.js, nib.js, edda.js).
   const KITS = { ...(M ? { mira: M } : {}), ...(C ? { cora: C } : {}), ...(N ? { naja: N } : {}), ...(HD ? { haldor: HD } : {}), ...(Z ? { zanni: Z } : {}), ...(IS ? { isolde: IS } : {}), ...(RH ? { rhea: RH } : {}), ...(SO ? { solan: SO } : {}), ...(NB ? { nib: NB } : {}), ...(ED ? { edda: ED } : {}) };
@@ -140,6 +140,7 @@
   }
   function startUltimateVoice(kind = 'arco', actor = hero) {
     // One speaking channel. Player calls take priority over an AI transformation.
+    if (window.GHOSTS?.[kind]?.voice === false) return;
     if (!audio || systemAnnouncer?.busy || !voiceBank[kind] || (actor === dummy && voiceActive)) return;
     stopUltimateVoice();
     ultimateVoice = voiceBank[kind]; voiceKind = kind; voiceActor = actor; voiceName = VOICE_NAMES[kind]; voiceClock = 0;
@@ -220,7 +221,7 @@
     const card=$('#round-call'),show=!menuOpen&&versus&&['intro','ko'].includes(match.phase);
     card.hidden=!show;card.dataset.phase=match?.phase||'fight';
     $('#round-call-title').textContent=!show?'':match.phase==='intro'?(match.fightCue?'FIGHT':`ROUND ${match.round}`):match.endText||'K.O.';
-    $('#round-call-detail').textContent=match?.phase==='ko'?(match.lastWinner==='draw'?'DRAW · ROUND REPLAY':(match.lastWinner==='player'?selectedCharacter:opponentCharacter).toUpperCase()+' WINS THE ROUND'):'FIRST TO TWO WINS';
+    $('#round-call-detail').textContent=match?.phase==='ko'?(match.lastWinner==='draw'?'DRAW · ROUND REPLAY':ghostName(match.lastWinner==='player'?selectedCharacter:opponentCharacter)+' WINS THE ROUND'):'FIRST TO TWO WINS';
     canvas.dataset.mode=match?.mode||'training';canvas.dataset.matchPhase=match?.phase||'fight';canvas.dataset.round=String(match?.round||1);canvas.dataset.opponent=opponentCharacter;canvas.dataset.difficulty=difficulty;canvas.dataset.stage=stageId;
   }
 
@@ -1587,7 +1588,14 @@
     if (hero.x < dummy.x) { drawHero(); drawDummy(); } else { drawDummy(); drawHero(); }
     drawSquadron(); drawSquadron(enemySquad); drawParade(parade); drawParade(enemyParade); drawMurmuration(flock); drawMurmuration(enemyFlock); drawSerpent(serpent); drawSerpent(enemySerpent); drawEffects(); drawHitboxes(); ctx.restore(); updateHud();
   }
+  // GHOST CLASH: the slot's art paths come from below; every visible label comes from ghosts.js.
   function fighterInfo(id,form) {
+    const base=fighterInfoBase(id,form),g=window.GHOSTS?.[id];if(!g)return base;
+    const beast=id==='fenr'&&form==='wolf'&&g.beast;
+    return {...base,name:g.name,cls:beast?g.beast.cls:g.cls,deck:beast?g.beast.deck:g.name,title:g.title,names:beast?g.beast.names:g.names};
+  }
+  function ghostName(id){return window.GHOSTS?.[id]?.name||String(id).toUpperCase();}
+  function fighterInfoBase(id,form) {
     if(id==='fenr'){const wolf=form==='wolf';return {name:'FENR',cls:wolf?'WEREWOLF':'DEMI-HUMAN',deck:wolf?'FENR · FERAL':'FENR',title:'WOLF RANGER',portrait:'assets/fenr/ui/portrait-'+(wolf?'wolf':'human')+'.webp',names:F.kits[wolf?'wolf':'human'].names,icons:['basic','skill1','skill2','ultimate'].map((s,i)=>'assets/fenr/ui/icon-'+(i===3?'ultimate':(wolf?'wolf':'human')+'-'+s)+'.webp')};}
     if(id==='cora')return {name:'CORA',cls:'DEMI-HUMAN',deck:'CORA',title:'SKY DANCER',portrait:'assets/cora/ui/portrait.webp',names:C.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/cora/ui/icon-'+s+'.webp')};
     if(id==='edda')return {name:'EDDA',cls:'DEMI-HUMAN',deck:'EDDA',title:'SHELL SAGE',portrait:'assets/edda/ui/portrait.webp',names:ED.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/edda/ui/icon-'+s+'.webp')};
@@ -1609,13 +1617,13 @@
       $('#player-name').textContent=me.name;$('#player-class').textContent=me.cls;$('#deck-character').textContent=me.deck;
       $('#player-title').textContent=me.title;
       $('#player-portrait').src=me.portrait;$('#player-portrait').alt='Portrait '+me.name;
-      $('#enemy-portrait').src=rival.portrait;$('#enemy-portrait').alt='Portrait '+opponentCharacter.toUpperCase();$('#enemy-class').textContent=rival.cls;
-      $('#enemy-name').textContent=opponentCharacter.toUpperCase();$('#enemy-title').textContent=rival.title;
-      $('.fighter-two').setAttribute('aria-label','Status lawan '+opponentCharacter.toUpperCase());
+      $('#enemy-portrait').src=rival.portrait;$('#enemy-portrait').alt='Portrait '+rival.name;$('#enemy-class').textContent=rival.cls;
+      $('#enemy-name').textContent=rival.name;$('#enemy-title').textContent=rival.title;
+      $('.fighter-two').setAttribute('aria-label','Status lawan '+rival.name);
       document.querySelectorAll('.skill-card').forEach((card,i)=>{card.querySelector('.skill-name').textContent=me.names[i];card.querySelector('img').src=me.icons[i];card.setAttribute('aria-label',me.names[i]+', '+['Spasi','I','O','P'][i]);});
     }
-    $('#player-status').textContent=selectedCharacter==='fenr'?(hero.form==='wolf'?'FERAL ACTIVE':'RANGER READY'):selectedCharacter==='mira'?'PILOT READY':selectedCharacter==='cora'?'WINGS READY':selectedCharacter==='naja'?'SANDS READY':selectedCharacter==='haldor'?'FURNACE HOT':selectedCharacter==='zanni'?'SHOWTIME':selectedCharacter==='isolde'?'LANCE READY':selectedCharacter==='rhea'?'ORBITS SET':selectedCharacter==='solan'?'PRIDE READY':selectedCharacter==='nib'?'ON THE ROUTE':selectedCharacter==='edda'?'STEADY AS STONE':'CORE ACTIVE';
-    for(const [actor,id] of [[hero,'player-form-timer'],[dummy,'enemy-form-timer']]){const el=$('#'+id),active=actor.form==='wolf';el.hidden=!active;el.textContent=active?'FERAL  '+Math.max(0,actor.formTime).toFixed(1)+' s':'';el.style.setProperty?.('--remaining',String(actor.formTime/F.balance.duration));}
+    {const g=window.GHOSTS?.[selectedCharacter];$('#player-status').textContent=g?(selectedCharacter==='fenr'&&hero.form==='wolf'?g.beast.status:g.status):selectedCharacter==='fenr'?(hero.form==='wolf'?'FERAL ACTIVE':'RANGER READY'):selectedCharacter==='mira'?'PILOT READY':selectedCharacter==='cora'?'WINGS READY':selectedCharacter==='naja'?'SANDS READY':selectedCharacter==='haldor'?'FURNACE HOT':selectedCharacter==='zanni'?'SHOWTIME':selectedCharacter==='isolde'?'LANCE READY':selectedCharacter==='rhea'?'ORBITS SET':selectedCharacter==='solan'?'PRIDE READY':selectedCharacter==='nib'?'ON THE ROUTE':selectedCharacter==='edda'?'STEADY AS STONE':'CORE ACTIVE';}
+    for(const [actor,id] of [[hero,'player-form-timer'],[dummy,'enemy-form-timer']]){const el=$('#'+id),active=actor.form==='wolf';el.hidden=!active;el.textContent=active?(window.GHOSTS?.fenr?.beast?.timer||'FERAL')+'  '+Math.max(0,actor.formTime).toFixed(1)+' s':'';el.style.setProperty?.('--remaining',String(actor.formTime/F.balance.duration));}
   }
   function updateHud() {
     updateFighterIdentity();
@@ -1668,7 +1676,7 @@
     const ct=fenrCutin?.t ?? (arcoGroup||summon)?.t ?? 100;
     cutin.classList.toggle('fenr-cutin',cutinKey==='fenr');cutin.classList.toggle('mira-cutin',cutinKey==='mira');cutin.classList.toggle('cora-cutin',cutinKey==='cora');cutin.classList.toggle('naja-cutin',cutinKey==='naja');cutin.classList.toggle('haldor-cutin',cutinKey==='haldor');cutin.classList.toggle('zanni-cutin',cutinKey==='zanni');cutin.classList.toggle('isolde-cutin',cutinKey==='isolde');cutin.classList.toggle('rhea-cutin',cutinKey==='rhea');cutin.classList.toggle('solan-cutin',cutinKey==='solan');cutin.classList.toggle('nib-cutin',cutinKey==='nib');cutin.classList.toggle('edda-cutin',cutinKey==='edda');
     const cutinArt=cutin.querySelector('.cutin-art'),cutinOwner=cutinKey==='fenr'?fenrCutin.owner:cutinKey==='mira'||cutinKey==='cora'||cutinKey==='naja'||cutinKey==='haldor'||cutinKey==='zanni'||cutinKey==='isolde'||cutinKey==='rhea'||cutinKey==='solan'||cutinKey==='nib'||cutinKey==='edda'?(summon.owner==='enemy'?'RIVAL':'PLAYER'):'';
-    if(cutin.dataset.identity!==cutinKey+cutinOwner){cutin.dataset.identity=cutinKey+cutinOwner;cutinArt.src=CUTIN_ART[cutinKey];if(cutinArt.complete)cutinArt.style.visibility='';else{cutinArt.style.visibility='hidden';cutinArt.onload=()=>{cutinArt.style.visibility='';};}cutin.querySelector('.cutin-kicker').textContent={fenr:'FENR / '+cutinOwner,mira:'MIRA / '+cutinOwner,cora:'CORA / '+cutinOwner,naja:'NAJA / '+cutinOwner,haldor:'HALDOR / '+cutinOwner,zanni:'ZANNI / '+cutinOwner,isolde:'ISOLDE / '+cutinOwner,rhea:'RHEA / '+cutinOwner,solan:'SOLAN / '+cutinOwner,nib:'NIB / '+cutinOwner,edda:'EDDA / '+cutinOwner,arco:'ARCO / AETHER COMMAND'}[cutinKey];cutin.querySelector('strong').innerHTML={fenr:'FERAL<br><em>AWAKENING</em>',mira:'ROCKET<br><em>PARADE</em>',cora:'NIGHT<br><em>MURMURATION</em>',naja:'DUNE<br><em>SERPENT</em>',haldor:'FORGE<br><em>QUAKE</em>',zanni:'GRAND<br><em>FINALE</em>',isolde:'SKYFALL<br><em>LANCES</em>',rhea:'GRAND<br><em>ORRERY</em>',solan:'SUNMANE<br><em>ROAR</em>',nib:'SPECIAL<br><em>DELIVERY</em>',edda:'ELDER<br><em>TORTOISE</em>',arco:'HELIOS<br><em>SQUADRON</em>'}[cutinKey];cutin.querySelector('.cutin-detail').textContent={fenr:'THE BEAST WITHIN',mira:'TWELVE-ROCKET SALVO',cora:'THREE-PASS RAVEN STORM',naja:'THREE-STRIKE SAND COBRA',haldor:'THREE-SLAM MOLTEN SHOCKWAVE',zanni:'THREE-RING BLADE BOOMERANG',isolde:'THREE-LANCE ICE DIVE',rhea:'THREE-PLANET ORBIT',solan:'THREE-ROAR SHOCKWAVE',nib:'THREE-PARCEL HOMING RUN',edda:'THREE-STOMP SPIRIT WALK',arco:'ORBITAL LASER STRIKE'}[cutinKey];cutin.setAttribute('aria-label',{fenr:'FENR ultimate: Feral Awakening',mira:'MIRA ultimate: Rocket Parade',cora:'CORA ultimate: Night Murmuration',naja:'NAJA ultimate: Dune Serpent',haldor:'HALDOR ultimate: Forge Quake',zanni:'ZANNI ultimate: Grand Finale',isolde:'ISOLDE ultimate: Skyfall Lances',rhea:'RHEA ultimate: Grand Orrery',solan:'SOLAN ultimate: Sunmane Roar',nib:'NIB ultimate: Special Delivery',edda:'EDDA ultimate: Elder Tortoise',arco:'ARCO ultimate: Helios Squadron'}[cutinKey]);}
+    if(cutin.dataset.identity!==cutinKey+cutinOwner){cutin.dataset.identity=cutinKey+cutinOwner;cutinArt.src=CUTIN_ART[cutinKey];if(cutinArt.complete)cutinArt.style.visibility='';else{cutinArt.style.visibility='hidden';cutinArt.onload=()=>{cutinArt.style.visibility='';};}cutin.querySelector('.cutin-kicker').textContent={fenr:'FENR / '+cutinOwner,mira:'MIRA / '+cutinOwner,cora:'CORA / '+cutinOwner,naja:'NAJA / '+cutinOwner,haldor:'HALDOR / '+cutinOwner,zanni:'ZANNI / '+cutinOwner,isolde:'ISOLDE / '+cutinOwner,rhea:'RHEA / '+cutinOwner,solan:'SOLAN / '+cutinOwner,nib:'NIB / '+cutinOwner,edda:'EDDA / '+cutinOwner,arco:'ARCO / AETHER COMMAND'}[cutinKey];cutin.querySelector('strong').innerHTML={fenr:'FERAL<br><em>AWAKENING</em>',mira:'ROCKET<br><em>PARADE</em>',cora:'NIGHT<br><em>MURMURATION</em>',naja:'DUNE<br><em>SERPENT</em>',haldor:'FORGE<br><em>QUAKE</em>',zanni:'GRAND<br><em>FINALE</em>',isolde:'SKYFALL<br><em>LANCES</em>',rhea:'GRAND<br><em>ORRERY</em>',solan:'SUNMANE<br><em>ROAR</em>',nib:'SPECIAL<br><em>DELIVERY</em>',edda:'ELDER<br><em>TORTOISE</em>',arco:'HELIOS<br><em>SQUADRON</em>'}[cutinKey];cutin.querySelector('.cutin-detail').textContent={fenr:'THE BEAST WITHIN',mira:'TWELVE-ROCKET SALVO',cora:'THREE-PASS RAVEN STORM',naja:'THREE-STRIKE SAND COBRA',haldor:'THREE-SLAM MOLTEN SHOCKWAVE',zanni:'THREE-RING BLADE BOOMERANG',isolde:'THREE-LANCE ICE DIVE',rhea:'THREE-PLANET ORBIT',solan:'THREE-ROAR SHOCKWAVE',nib:'THREE-PARCEL HOMING RUN',edda:'THREE-STOMP SPIRIT WALK',arco:'ORBITAL LASER STRIKE'}[cutinKey];cutin.setAttribute('aria-label',{fenr:'FENR ultimate: Feral Awakening',mira:'MIRA ultimate: Rocket Parade',cora:'CORA ultimate: Night Murmuration',naja:'NAJA ultimate: Dune Serpent',haldor:'HALDOR ultimate: Forge Quake',zanni:'ZANNI ultimate: Grand Finale',isolde:'ISOLDE ultimate: Skyfall Lances',rhea:'RHEA ultimate: Grand Orrery',solan:'SOLAN ultimate: Sunmane Roar',nib:'NIB ultimate: Special Delivery',edda:'EDDA ultimate: Elder Tortoise',arco:'ARCO ultimate: Helios Squadron'}[cutinKey]);ghostCutin(cutin,cutinKey,cutinOwner||(cutinKey==='arco'&&live(enemySquad)?'RIVAL':'PLAYER'));}
     const visible = ct < SQUAD.cutinDuration;
     cutin.classList.toggle('visible', visible); cutin.setAttribute('aria-hidden', String(!visible));
     const slide = !visible ? -110 : ct < .16 ? -110 * Math.pow(1 - ct / .16,3) : ct > .57 ? 110 * Math.pow((ct-.57)/.21,2) : 0;
@@ -1678,6 +1686,7 @@
   }
   // Cut-in art per fighter. Only the two fighters of the current fight are warmed (at start/select), so a banner never waits
   // for its image; until the right image is decoded the art stays hidden (see updateHud) instead of showing the last one.
+  function ghostCutin(cutin,key,owner){const g=window.GHOSTS?.[key];if(!g)return;cutin.querySelector('.cutin-kicker').textContent=g.name+' / '+(owner||'PLAYER');cutin.querySelector('strong').innerHTML=g.cutin.top+'<br><em>'+g.cutin.bottom+'</em>';cutin.querySelector('.cutin-detail').textContent=g.cutin.detail;cutin.setAttribute('aria-label',g.name+' ultimate: '+g.names[3]);}
   const CUTIN_ART={fenr:'assets/fenr/ui/cutin.webp',mira:'assets/mira/ui/cutin.webp',cora:'assets/cora/ui/cutin.webp',naja:'assets/naja/ui/cutin.webp',haldor:'assets/haldor/ui/cutin.webp',zanni:'assets/zanni/ui/cutin.webp',isolde:'assets/isolde/ui/cutin.webp',rhea:'assets/rhea/ui/cutin.webp',solan:'assets/solan/ui/cutin.webp',nib:'assets/nib/ui/cutin.webp',edda:'assets/edda/ui/cutin.webp',arco:'assets/ui/ultimate-cutin.webp'};
   let cutinWarm=[];
   function warmCutins(){cutinWarm=[...new Set([selectedCharacter,opponentCharacter])].map(id=>CUTIN_ART[id]).filter(Boolean).map(src=>{const im=new Image();im.decoding='async';im.src=src;return im;});}
