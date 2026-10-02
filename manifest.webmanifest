@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Perang Dedemit",
+  "short_name": "Dedemit",
+  "description": "Game fighting dua belas dedemit Nusantara: Makhluk Halus melawan Ilmu Hitam di lima tempat angker.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#0e1a16",
+  "theme_color": "#0e1a16",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "assets/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/brand/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/brand/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "assets/brand/share.jpg", "sizes": "1200x630", "type": "image/jpeg", "form_factor": "wide", "label": "Perang Dedemit" }
+  ]
+}

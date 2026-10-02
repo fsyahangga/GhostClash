@@ -1,14 +1,14 @@
 {
-  "files": 280,
-  "bytes": 31397959,
+  "files": 289,
+  "bytes": 32009897,
   "list": [
     {
       "file": "index.html",
-      "bytes": 15295
+      "bytes": 16831
     },
     {
       "file": "mobile.html",
-      "bytes": 3718
+      "bytes": 4625
     },
     {
       "file": "style.css",
@@ -28,7 +28,7 @@
     },
     {
       "file": "dedemit.css",
-      "bytes": 9830
+      "bytes": 11257
     },
     {
       "file": "assets/menu/home-dedemit.webp",
@@ -47,12 +47,48 @@
       "bytes": 815587
     },
     {
+      "file": "pwa.js",
+      "bytes": 744
+    },
+    {
+      "file": "manifest.webmanifest",
+      "bytes": 1073
+    },
+    {
+      "file": "favicon.ico",
+      "bytes": 10179
+    },
+    {
+      "file": "assets/brand/favicon-64.png",
+      "bytes": 9789
+    },
+    {
+      "file": "assets/brand/icon-192.png",
+      "bytes": 59360
+    },
+    {
+      "file": "assets/brand/icon-512.png",
+      "bytes": 273552
+    },
+    {
+      "file": "assets/brand/icon-maskable-192.png",
+      "bytes": 38109
+    },
+    {
+      "file": "assets/brand/icon-maskable-512.png",
+      "bytes": 182423
+    },
+    {
+      "file": "assets/brand/apple-touch-icon.png",
+      "bytes": 30769
+    },
+    {
       "file": "game.js",
       "bytes": 172739
     },
     {
       "file": "menu.js",
-      "bytes": 26396
+      "bytes": 28018
     },
     {
       "file": "match.js",
@@ -1116,7 +1152,7 @@
     },
     {
       "file": "precache.js",
-      "bytes": 15692
+      "bytes": 16140
     },
     {
       "file": "sw.js",
