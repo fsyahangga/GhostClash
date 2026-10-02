@@ -84,3 +84,20 @@ Skrip itu menulis ulang `precache.js` dan `files.json`, jadi loading screen meng
 ## Menambah atau mengubah teks hantu
 
 Edit entri slotnya di [ghosts.js](../ghosts.js): `name`, `tag`, `title`, `faction`, `detail`, `style`, `color`, `names` (Space, I, O, P), `status`, `cutin`. Leyak punya blok `beast` untuk wujud celeng. Tidak ada tempat lain yang perlu diubah.
+
+## Gambar base dan aset sementara
+
+Gambar base tiap hantu (satu pose penuh, hadap kanan, latar magenta atau hijau polos) disimpan di `assets/ghosts/base/<hantu>.webp`. Dari gambar itu [build_ghost_assets.py](tools/build_ghost_assets.py) membuat untuk slotnya:
+
+- atlas sprite dengan tata letak yang sama persis dengan slot lama; setiap state adalah pose base yang ditekan, dicondongkan, digeser, atau diputar (napas idle, ayunan jalan, terjangan, mundur saat kena, jatuh);
+- metrics bounds/tinggi dihitung ulang dari frame baru; emitter dan playback tetap;
+- portrait HUD, art pilih karakter, dan cut-in ultimate.
+
+Ini aset sementara sampai strip animasi asli dibuat lewat pipeline sprite. Ikon skill dan VFX belum diganti. Jiangshi belum punya base, jadi slot `edda` masih memakai aset lama.
+
+Menambah atau mengganti satu hantu (butuh Python dengan Pillow dan numpy, serta Node.js):
+
+    python guide/tools/build_ghost_assets.py jiangshi
+    node guide/tools/update_precache.mjs
+
+Crop portrait diatur di tabel `GHOSTS` dalam skrip itu (`portrait=[cx, cy, ukuran]` dalam piksel gambar base 1254 px).

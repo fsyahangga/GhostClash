@@ -19,7 +19,7 @@ Twelve chibi ghosts from folklore around the world, cinematic ultimates and a CP
 GHOST CLASH is built on [Aether Clash](https://github.com/bangtutorial/aether-clash) by Bang Tutorial ([YouTube tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU)). The engine, combat and CPU are unchanged; each of the twelve kit slots is now played by a ghost whose legend fits that slot's moves.
 
 > [!NOTE]
-> **Work in progress.** Names, factions, skill names, HUD and cut-in text are already the ghost roster. The sprites, portraits, cut-in art and voices are still the original Aether Clash assets until the ghost art is generated. Prompts for every ghost are in [guide/ghost-prompts.md](guide/ghost-prompts.md); which files to replace is in [guide/ghost-roster.md](guide/ghost-roster.md).
+> **Work in progress.** Eleven ghosts already have their own art: portraits, select art, cut-ins and placeholder puppet sprites built from one base image each (`guide/tools/build_ghost_assets.py`). Jiangshi, skill icons, effects, arena backgrounds and voices are still the original Aether Clash assets. Prompts for every ghost are in [guide/ghost-prompts.md](guide/ghost-prompts.md); which files to replace is in [guide/ghost-roster.md](guide/ghost-roster.md).
 
 ## 👻 Roster
 

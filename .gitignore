@@ -11,3 +11,5 @@ desktop.ini
 # Tooling
 node_modules/
 *.log
+
+__pycache__/

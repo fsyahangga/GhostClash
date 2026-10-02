@@ -3,7 +3,7 @@
    legend fits that slot's moves best. This file only changes what the player sees and hears: names, faction, titles,
    skill names, cut-in text and status lines. Damage, reach, cooldowns and the CPU stay exactly as tuned.
    Load order: after every kit file and the announcer manifest, before announcer.js / game.js / menu.js.
-   Swap art by replacing the slot's files in place (see guide/ghost-roster.md); new voice clips: set voice:true. */
+   Placeholder art comes from assets/ghosts/base via guide/tools/build_ghost_assets.py; new voice clips: set voice:true. */
 (() => {
   'use strict';
   const FACTIONS = {
