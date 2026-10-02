@@ -1,6 +1,6 @@
 {
   "files": 289,
-  "bytes": 32009897,
+  "bytes": 29766482,
   "list": [
     {
       "file": "index.html",
@@ -304,11 +304,11 @@
     },
     {
       "file": "assets/cora/manifest.js",
-      "bytes": 11517
+      "bytes": 11581
     },
     {
       "file": "assets/cora/run/sprite-sheet-alpha.webp",
-      "bytes": 1507424
+      "bytes": 1344066
     },
     {
       "file": "assets/cora/ui/cutin.webp",
@@ -360,11 +360,11 @@
     },
     {
       "file": "assets/edda/manifest.js",
-      "bytes": 12169
+      "bytes": 12237
     },
     {
       "file": "assets/edda/run/sprite-sheet-alpha.webp",
-      "bytes": 1314596
+      "bytes": 1182430
     },
     {
       "file": "assets/edda/ui/cutin.webp",
@@ -416,11 +416,11 @@
     },
     {
       "file": "assets/fenr/human/manifest.js",
-      "bytes": 11500
+      "bytes": 11566
     },
     {
       "file": "assets/fenr/human/run/sprite-sheet-alpha.webp",
-      "bytes": 2009878
+      "bytes": 1609848
     },
     {
       "file": "assets/fenr/ui/cutin.webp",
@@ -488,11 +488,11 @@
     },
     {
       "file": "assets/fenr/wolf/manifest.js",
-      "bytes": 11519
+      "bytes": 11582
     },
     {
       "file": "assets/fenr/wolf/run/sprite-sheet-alpha.webp",
-      "bytes": 2318810
+      "bytes": 1824150
     },
     {
       "file": "assets/fonts/Rajdhani-Bold.ttf",
@@ -516,11 +516,11 @@
     },
     {
       "file": "assets/haldor/manifest.js",
-      "bytes": 11554
+      "bytes": 11613
     },
     {
       "file": "assets/haldor/run/sprite-sheet-alpha.webp",
-      "bytes": 2229690
+      "bytes": 1840070
     },
     {
       "file": "assets/haldor/ui/cutin.webp",
@@ -576,11 +576,11 @@
     },
     {
       "file": "assets/isolde/manifest.js",
-      "bytes": 11863
+      "bytes": 11936
     },
     {
       "file": "assets/isolde/run/sprite-sheet-alpha.webp",
-      "bytes": 1093174
+      "bytes": 975044
     },
     {
       "file": "assets/isolde/ui/cutin.webp",
@@ -624,11 +624,11 @@
     },
     {
       "file": "assets/mecha/manifest.js",
-      "bytes": 11202
+      "bytes": 11274
     },
     {
       "file": "assets/mecha/run/sprite-sheet-alpha.webp",
-      "bytes": 1310224
+      "bytes": 1334776
     },
     {
       "file": "assets/menu/arco-select.webp",
@@ -712,11 +712,11 @@
     },
     {
       "file": "assets/mira/manifest.js",
-      "bytes": 11905
+      "bytes": 11955
     },
     {
       "file": "assets/mira/run/sprite-sheet-alpha.webp",
-      "bytes": 719602
+      "bytes": 689382
     },
     {
       "file": "assets/mira/ui/cutin.webp",
@@ -772,11 +772,11 @@
     },
     {
       "file": "assets/naja/manifest.js",
-      "bytes": 11503
+      "bytes": 11582
     },
     {
       "file": "assets/naja/run/sprite-sheet-alpha.webp",
-      "bytes": 1417586
+      "bytes": 1310296
     },
     {
       "file": "assets/naja/ui/cutin.webp",
@@ -832,11 +832,11 @@
     },
     {
       "file": "assets/nib/manifest.js",
-      "bytes": 11858
+      "bytes": 11935
     },
     {
       "file": "assets/nib/run/sprite-sheet-alpha.webp",
-      "bytes": 980704
+      "bytes": 885620
     },
     {
       "file": "assets/nib/ui/cutin.webp",
@@ -892,11 +892,11 @@
     },
     {
       "file": "assets/rhea/manifest.js",
-      "bytes": 11855
+      "bytes": 11905
     },
     {
       "file": "assets/rhea/run/sprite-sheet-alpha.webp",
-      "bytes": 559076
+      "bytes": 519430
     },
     {
       "file": "assets/rhea/ui/cutin.webp",
@@ -992,11 +992,11 @@
     },
     {
       "file": "assets/solan/manifest.js",
-      "bytes": 11826
+      "bytes": 11895
     },
     {
       "file": "assets/solan/run/sprite-sheet-alpha.webp",
-      "bytes": 1264922
+      "bytes": 1197102
     },
     {
       "file": "assets/solan/ui/cutin.webp",
@@ -1104,11 +1104,11 @@
     },
     {
       "file": "assets/zanni/manifest.js",
-      "bytes": 11688
+      "bytes": 11748
     },
     {
       "file": "assets/zanni/run/sprite-sheet-alpha.webp",
-      "bytes": 1892302
+      "bytes": 1661510
     },
     {
       "file": "assets/zanni/ui/cutin.webp",
@@ -1152,7 +1152,7 @@
     },
     {
       "file": "precache.js",
-      "bytes": 16140
+      "bytes": 16139
     },
     {
       "file": "sw.js",

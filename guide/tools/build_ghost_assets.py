@@ -164,14 +164,24 @@ def write_manifest(path, data):
 # ---------------------------------------------------------------- animation strips (real frames)
 # Drop a strip at assets/ghosts/strips/<dedemit>/<state>.png|webp: one row of poses on the same flat chroma as the base
 # (see guide/ghost-animation-prompts.md). States without a strip keep the puppet frames. Leyak's fire form reads
-# assets/ghosts/strips/leyak-api/. Optional scale.json in the folder overrides STRIP_FIT per state.
+# assets/ghosts/strips/leyak-api/.
+# Image generators draw every strip at a slightly different size, so strips are scaled by silhouette area: the
+# median pose of each strip gets the same area as the median idle pose, and the tallest idle pose gets the fighter's
+# standing height. A pose that is really taller (a stretch, a rise) or lower (a crouch, lying down) stays so. An optional
+# scale.json in the folder ({"attack": 0.95}) multiplies a strip's size. Without an idle strip, the tallest pose of each
+# strip is scaled to STRIP_FIT of the standing height instead.
 STRIP_DIR = ROOT / 'assets/ghosts/strips'
+# Idle height of each slot in the original Aether Clash atlases; scale in GHOSTS is relative to it.
+STAND = {'assets/isolde/manifest.js': 199, 'assets/mecha/manifest.js': 180, 'assets/edda/manifest.js': 171, 'assets/zanni/manifest.js': 176,
+         'assets/haldor/manifest.js': 169, 'assets/solan/manifest.js': 175, 'assets/fenr/human/manifest.js': 194,
+         'assets/fenr/wolf/manifest.js': 216, 'assets/cora/manifest.js': 184, 'assets/rhea/manifest.js': 170,
+         'assets/nib/manifest.js': 150, 'assets/mira/manifest.js': 182, 'assets/naja/manifest.js': 182}
 STRIP_SOURCES = {   # engine row -> strip files to try, in order; a trailing '<' plays that strip backwards
     'idle': ['idle'], 'walk': ['walk'], 'run': ['run', 'walk'], 'crouch': ['crouch'], 'jump': ['jump'], 'doublejump': ['doublejump'],
     'attack1': ['attack1', 'attack'], 'attack2': ['attack2', 'attack'], 'attack3': ['attack3', 'attack'],
     'skill1': ['skill1'], 'skill2': ['skill2'], 'ultimate': ['ultimate'], 'hurt': ['hurt'], 'down': ['down'], 'recover': ['recover', 'down<'],
 }
-# The tallest pose of a strip is scaled to this share of the fighter's standing height.
+# Fallback when there is no idle strip: the tallest pose of a strip is scaled to this share of the standing height.
 STRIP_FIT = {'idle': 1.0, 'walk': 1.0, 'run': .98, 'crouch': .82, 'jump': 1.0, 'doublejump': .78, 'attack1': 1.04, 'attack2': 1.04, 'attack3': 1.06,
              'skill1': 1.04, 'skill2': 1.04, 'ultimate': 1.08, 'hurt': .98, 'down': .9, 'recover': .95}
 
@@ -192,21 +202,41 @@ def split_poses(img, n):
         if bb: poses.append((piece.crop(bb), bb[3]))   # the pose and its lowest row in the strip
     return poses
 
+def strip_file(d, name):
+    return next((d / f'{name}.{e}' for e in ('png', 'webp') if (d / f'{name}.{e}').exists()), None)
+
+def area(p):
+    return int((np.asarray(p)[..., 3] > 40).sum())
+
+_IDLE_REF = {}
+def idle_area(d, key, height):
+    """Silhouette area of the median idle pose once the tallest idle pose is the standing height (None without idle)."""
+    if (d, height) not in _IDLE_REF:
+        path = strip_file(d, 'idle'); ref = None
+        if path:
+            poses = [p for p, _ in split_poses(cutout(path, key), 4)]
+            if poses: ref = float(np.median([area(p) for p in poses])) * (height / max(p.height for p in poses)) ** 2
+        _IDLE_REF[(d, height)] = ref
+    return _IDLE_REF[(d, height)]
+
 def strip_frames(ghost, key, state, count, height, folder=None):
-    """Poses for one engine row from the dedemit's strips, scaled to its standing height, or None."""
+    """Poses for one engine row from the dedemit's strips, scaled to its standing height, or None.
+    Each pose comes with its rise: how far above the ground line it was drawn (a hop, a float), in atlas pixels."""
     d = STRIP_DIR / (folder or ghost)
     if not d.exists(): return None
-    fit = dict(STRIP_FIT)
-    if (d / 'scale.json').exists(): fit.update(json.loads((d / 'scale.json').read_text()))
+    extra = json.loads((d / 'scale.json').read_text()) if (d / 'scale.json').exists() else {}
+    ref = idle_area(d, key, height)
     for src in STRIP_SOURCES.get(state, [state]):
         name, rev = src.rstrip('<'), src.endswith('<')
-        path = next((d / f'{name}.{e}' for e in ('png', 'webp') if (d / f'{name}.{e}').exists()), None)
+        path = strip_file(d, name)
         if not path: continue
         want = 1 if state in ('jump', 'doublejump') else 4
         poses = split_poses(cutout(path, key), want)
         if not poses: continue
         if rev: poses = poses[::-1]
-        tall = max(p.height for p, _ in poses); k = height * fit.get(state, 1.0) / tall
+        if ref: k = (ref / float(np.median([area(p) for p, _ in poses]))) ** .5
+        else: k = height * STRIP_FIT.get(state, 1.0) / max(p.height for p, _ in poses)
+        k *= extra.get(name, extra.get(state, 1.0))
         ground = max(b for _, b in poses)              # the lowest pose stands on the ground line
         out = []
         for p, b in poses:                             # a pose drawn higher in the strip (a hop, a rise) keeps its height
@@ -246,7 +276,9 @@ def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None, lift=
         real = strip_frames(ghost, key, state, n, f.height, strip_folder) if ghost else None
         if real: used.append(state)
         for i, rc in enumerate(rects):
-            if real: cell, bb = place_pose(real[i], rc['w'], rc['h'], ax, ay, lift, tint if (not strip_folder or strip_folder == ghost) else None)
+            if real:                                   # a floating dedemit still drops to the ground when knocked down
+                cell, bb = place_pose(real[i], rc['w'], rc['h'], ax, ay, 0 if state in ('down', 'recover') else lift,
+                                      tint if (not strip_folder or strip_folder == ghost) else None)
             else:
                 P = pose(state, i, n); P['dy'] -= lift
                 cell, bb = render_frame(f, fx, P, rc['w'], rc['h'], ax, ay, tint)
@@ -419,7 +451,7 @@ def build(name):
     for i, (atlas, manifest, prefix) in enumerate(zip(sf['atlas'], sf['manifest'], sf['prefix'])):
         data = read_manifest(ROOT / manifest)
         lay = data[prefix + '_MANIFEST']['frame_layout']
-        height = round(data[prefix + '_METRICS']['states']['idle']['frames'][0]['height'] * cfg.get('scale', 1))
+        height = round(STAND[manifest] * cfg.get('scale', 1))     # the slot's original idle height, so rebuilding never compounds
         height = min(height, lay['cellHeight'] - 16 - cfg.get('lift', 0))
         tint = (255, 110, 30) if (cfg['slot'] == 'fenr' and i == 1) else None   # Leyak's fire form glows like embers
         folder = (name + '-api') if (cfg['slot'] == 'fenr' and i == 1) else None

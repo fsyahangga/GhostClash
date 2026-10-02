@@ -42,7 +42,7 @@ Lalu bangun ulang aset dedemit itu dan precache, dan push:
 
 Builder menulis `strips used for <slot>: ...` untuk gerakan yang memakai strip. Builder memotong strip di celah kosong antar pose, menyamakan tinggi pose dengan tinggi base, menaruh kaki di garis tanah, dan mempertahankan pose yang digambar lebih tinggi (lompat, melayang naik).
 
-**Kalau ukurannya kurang pas** (misalnya pose jongkok jadi terlalu besar), buat `assets/ghosts/strips/<dedemit>/scale.json` berisi faktor per gerakan, relatif ke tinggi base: `{"attack": 0.95, "down": 0.8}`. Nilai bawaan ada di `STRIP_FIT` dalam [build_ghost_assets.py](tools/build_ghost_assets.py).
+**Ukuran.** Generator gambar biasanya menggambar tiap strip dengan ukuran sedikit berbeda. Builder menyamakannya lewat luas siluet: pose rata-rata tiap strip dibuat seluas pose diam, dan pose diam tertinggi setinggi tinggi berdiri dedemit di game. Jadi pose yang memang lebih tinggi (Begu Ganjang menjulang) atau lebih rendah (jongkok, terbaring) tetap begitu. Kalau satu strip masih terasa terlalu besar atau kecil, buat `assets/ghosts/strips/<dedemit>/scale.json` berisi pengali per gerakan, misalnya `{"attack": 0.95, "ultimate": 1.1}`.
 
 **Leyak wujud api** (ultimate Malam Pengleakan) memakai atlas kedua. Tanpa strip khusus, atlas itu memakai strip Leyak biasa yang diwarnai bara. Kalau ingin gambar sendiri, buat strip dengan gerakan yang sama di folder `assets/ghosts/strips/leyak-api/` dan tambahkan ke prompt: "Leyak is in her fire form: her whole body is wreathed in orange and red flames".
 
