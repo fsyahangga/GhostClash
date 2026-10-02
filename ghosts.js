@@ -1,99 +1,124 @@
-/* GHOST CLASH roster overlay.
-   The engine still runs the twelve original kit slots (arco, fenr, mira ...). Each slot is now played by a ghost whose
-   legend fits that slot's moves best. This file only changes what the player sees and hears: names, faction, titles,
-   skill names, cut-in text and status lines. Damage, reach, cooldowns and the CPU stay exactly as tuned.
+/* PERANG DEDEMIT roster overlay.
+   The engine still runs the twelve original kit slots (arco, fenr, mira ...). Each slot is played by a dedemit whose
+   legend fits that slot's moves best. This file sets what the player sees and reads: names, faction, titles, skill
+   names, cut-in text, status lines and the legend shown in the Kitab Dedemit. Damage, reach, cooldowns and the CPU
+   stay as tuned; the one new mechanic is Pocong's binding rope (isolde.js piercer.bind, game.js bindHit).
    Load order: after every kit file and the announcer manifest, before announcer.js / game.js / menu.js.
-   Placeholder art comes from assets/ghosts/base via guide/tools/build_ghost_assets.py; new voice clips: set voice:true. */
+   Art comes from assets/ghosts/base via guide/tools/build_ghost_assets.py; new voice clips: set voice:true. */
 (() => {
   'use strict';
   const FACTIONS = {
-    nusantara: { label: 'NUSANTARA', blurb: 'Hantu-hantu legenda Indonesia: pocong, kuntilanak, genderuwo, tuyul, kuyang dan leyak.' },
-    mancanegara: { label: 'MANCANEGARA', blurb: 'Arwah legenda dari Tiongkok, Jepang, Meksiko, Irlandia dan Inggris.' }
+    halus: { label: 'MAKHLUK HALUS', blurb: 'Arwah penasaran dan penunggu tempat angker: mereka yang mati tak tenang dan yang menjaga pohon, rumah tua, dan tanah keramat.' },
+    hitam: { label: 'ILMU HITAM', blurb: 'Mereka yang lahir dari ilmu hitam: manusia yang melepas kepalanya di malam hari, dan makhluk peliharaan yang dikirim untuk mencuri dan mencelakai.' }
   };
-  // voice:false mutes the slot's old name clips (select, wins, ultimate) until clips for the ghost are recorded.
+  // Order = order in the select grid and the Kitab Dedemit.
   const GHOSTS = {
     isolde: {
-      id: 'pocong', name: 'POCONG', tag: 'THE SHROUD HOPPER', title: 'SHROUD HOPPER', faction: 'nusantara', origin: 'Jawa / Melayu',
-      detail: 'Talinya belum dilepas. Lompatannya belum selesai.', style: 'Rushdown / lompatan kafan dan tali pocong', color: '#e8e4d8',
-      names: ['KAFAN CHAIN', 'TALI KAFAN', 'LOMPAT POCONG', 'HUJAN POCONG'], status: 'TALI TERIKAT',
+      id: 'pocong', name: 'POCONG', tag: 'SI TERIKAT KAFAN', title: 'TERIKAT KAFAN', faction: 'halus', origin: 'Jawa',
+      lore: 'Arwah yang terbungkus kain kafan lengkap dengan tali pengikatnya. Konon talinya lupa dilepas saat dikubur, jadi ia hanya bisa bergerak melompat atau melayang.',
+      detail: 'Talinya belum dilepas. Lompatannya belum selesai.', style: 'Rushdown / lompatan kafan dan tali pengikat', color: '#e8e4d8',
+      names: ['SUNDULAN KAFAN', 'TALI POCONG', 'LOMPAT POCONG', 'HUJAN POCONG'], status: 'TALI TERIKAT',
+      moves: ['Tiga sundulan berjangkauan panjang', 'Tali dilempar naik; lawan yang kena terikat diam 0,7 detik', 'Lompatan menerjang secepat kilat', 'Tiga pocong jatuh dari langit ke arah lawan'],
       cutin: { top: 'HUJAN', bottom: 'POCONG', detail: 'TIGA POCONG JATUH DARI LANGIT' }, voice: false
     },
     arco: {
-      id: 'kuntilanak', name: 'KUNTILANAK', tag: 'THE WARU WAILER', title: 'WARU WAILER', faction: 'nusantara', origin: 'Kalimantan / Melayu',
-      detail: 'Kalau tawanya terdengar jauh, ia sudah di belakangmu.', style: 'Aerial / tawa melengking dan sambaran dari pohon', color: '#f1f1f6',
-      names: ['KUKU PANJANG', 'TAWA MELENGKING', 'JATUH DARI WARU', 'MALAM POHON WARU'], status: 'HIHIHIHI...',
-      cutin: { top: 'MALAM', bottom: 'POHON WARU', detail: 'ARWAH WARU MENYAPU ARENA' }, voice: false
-    },
-    haldor: {
-      id: 'genderuwo', name: 'GENDERUWO', tag: 'THE BANYAN BRUTE', title: 'BANYAN BRUTE', faction: 'nusantara', origin: 'Jawa',
-      detail: 'Penunggu beringin. Batu pertamanya selalu peringatan.', style: 'Heavy tank / lempar batu dan serudukan rimba', color: '#a8744a',
-      names: ['TINJU RIMBA', 'LEMPAR BATU GAIB', 'SERUDUK RIMBA', 'AMUK BERINGIN'], status: 'RIMBA BANGUN',
-      cutin: { top: 'AMUK', bottom: 'BERINGIN', detail: 'TIGA HANTAMAN PENUNGGU BERINGIN' }, voice: false
-    },
-    nib: {
-      id: 'tuyul', name: 'TUYUL', tag: 'THE LITTLE PICKPOCKET', title: 'LITTLE PICKPOCKET', faction: 'nusantara', origin: 'Jawa',
-      detail: 'Kecil, gundul, dan dompetmu sudah kosong.', style: 'Rushdown / koin lempar dan copet kilat', color: '#e6c25a',
-      names: ['GIGIT KECIL', 'LEMPAR KOIN', 'COPET KILAT', 'PESUGIHAN KILAT'], status: 'KANTONG TERBUKA',
-      cutin: { top: 'PESUGIHAN', bottom: 'KILAT', detail: 'TIGA KARUNG KOIN PENGEJAR' }, voice: false
-    },
-    cora: {
-      id: 'kuyang', name: 'KUYANG', tag: 'THE MIDNIGHT HEAD', title: 'MIDNIGHT HEAD', faction: 'nusantara', origin: 'Kalimantan',
-      detail: 'Tengah malam, kepalanya pergi berburu sendiri.', style: 'Agile / pita arwah dan kepala terbang', color: '#d0505a',
-      names: ['CAKAR MALAM', 'PITA ARWAH', 'SAPUAN MALAM', 'PESTA KUYANG'], status: 'KEPALA LAPAR',
-      cutin: { top: 'PESTA', bottom: 'KUYANG', detail: 'TIGA SAPUAN KEPALA TERBANG' }, voice: false
-    },
-    fenr: {
-      id: 'leyak', name: 'LEYAK', tag: 'THE NIGHT FLAME', title: 'NIGHT FLAME', faction: 'nusantara', origin: 'Bali',
-      detail: 'Malam hari ia berganti rupa. Apinya tidak.', style: 'Shapeshifter / api leyak dan wujud celeng', color: '#f29b3a',
-      names: ['CAKAR BARA', 'API LEYAK', 'TERJANG MALAM', 'MALAM PENGLEAKAN'],
-      beast: { cls: 'WUJUD CELENG', deck: 'LEYAK · CELENG', names: ['TARING CELENG', 'TERKAM CELENG', 'LOLONG MALAM', 'MALAM PENGLEAKAN'], status: 'CELENG MENGAMUK', timer: 'CELENG' },
-      status: 'API MENYALA', cutin: { top: 'MALAM', bottom: 'PENGLEAKAN', detail: 'BERUBAH WUJUD JADI CELENG' }, voice: false
+      id: 'kuntilanak', name: 'KUNTILANAK', tag: 'SI TAWA MELENGKING', title: 'TAWA MELENGKING', faction: 'halus', origin: 'Kalimantan / Melayu',
+      lore: 'Hantu perempuan berambut panjang dan berbaju putih yang dikenali dari tawanya yang melengking. Dipercaya berasal dari perempuan yang meninggal saat hamil, dan suka bersarang di pohon waru.',
+      detail: 'Kalau tawanya terdengar jauh, ia sudah di belakangmu.', style: 'Brawler / tawa melengking dan sambaran dari pohon', color: '#f1f1f6',
+      names: ['CAKAR KUKU', 'TAWA MELENGKING', 'JATUH DARI WARU', 'MALAM POHON WARU'], status: 'HIHIHIHI...',
+      moves: ['Tiga cakaran kuku panjang', 'Gelombang tawa melesat lurus', 'Terjun dari dahan, hantaman area ke tanah', 'Arwah dari pohon waru menyambar lawan dari udara'],
+      cutin: { top: 'MALAM', bottom: 'POHON WARU', detail: 'ARWAH WARU MENYAMBAR DARI UDARA' }, voice: false
     },
     edda: {
-      id: 'jiangshi', name: 'JIANGSHI', tag: 'THE TALISMAN HOPPER', title: 'TALISMAN HOPPER', faction: 'mancanegara', origin: 'Tiongkok',
-      detail: 'Selama jimatnya menempel, ia masih mau menunggu.', style: 'Counter / jimat melompat dan perisai jimat', color: '#f2d24b',
-      names: ['TELAPAK KAKU', 'JIMAT MELOMPAT', 'PERISAI JIMAT', 'JIMAT TERLEPAS'], status: 'JIMAT MENEMPEL',
-      cutin: { top: 'JIMAT', bottom: 'TERLEPAS', detail: 'TIGA LOMPATAN JIANGSHI RAKSASA' }, voice: false
+      id: 'sundelbolong', name: 'SUNDEL BOLONG', tag: 'SI PUNGGUNG BOLONG', title: 'PUNGGUNG BOLONG', faction: 'halus', origin: 'Jawa',
+      lore: 'Hantu perempuan berambut panjang dengan lubang besar di punggungnya yang tertutup rambut. Kisahnya selalu tentang dendam yang belum terbalas.',
+      detail: 'Pukul ia sekali. Dendamnya yang akan membalas.', style: 'Counter / arwah memantul dan balas dendam', color: '#9fe3e6',
+      names: ['CAKAR DENDAM', 'ARWAH MEMANTUL', 'BALAS DENDAM', 'DENDAM KESUMAT'], status: 'DENDAM MENUNGGU',
+      moves: ['Tiga cakaran dendam', 'Bola arwah memantul dua kali di tanah', 'Sikap bertahan 0,55 detik; serangan pertama dibalas', 'Arwah dendam raksasa menghentak tanah tiga kali'],
+      cutin: { top: 'DENDAM', bottom: 'KESUMAT', detail: 'TIGA HENTAKAN ARWAH DENDAM' }, voice: false
     },
     zanni: {
-      id: 'kuchisake', name: 'KUCHISAKE-ONNA', tag: 'THE MASKED QUESTION', title: 'MASKED QUESTION', faction: 'mancanegara', origin: 'Jepang',
-      detail: 'Ia hanya bertanya satu hal. Jawab dengan hati-hati.', style: 'Trickster / gunting bumerang dan tarikan dekat', color: '#c9b48a',
-      names: ['GUNTING CEPAT', 'GUNTING BUMERANG', 'WATASHI, KIREI?', 'BUKA MASKER'], status: 'MASKER TERPASANG',
-      cutin: { top: 'BUKA', bottom: 'MASKER', detail: 'GUNTING RAKSASA PULANG-PERGI' }, voice: false
+      id: 'wewegombel', name: 'WEWE GOMBEL', tag: 'SI PENCULIK SENJA', title: 'PENCULIK SENJA', faction: 'halus', origin: 'Semarang, Jawa Tengah',
+      lore: 'Hantu perempuan tua berambut panjang yang menculik anak-anak yang ditelantarkan atau kurang diperhatikan orang tuanya, lalu menyembunyikannya di pohon aren.',
+      detail: 'Pulanglah sebelum magrib. Tangannya lebih panjang dari bayanganmu.', style: 'Trickster / tangan panjang dan selendang bumerang', color: '#b9a27e',
+      names: ['TANGAN PANJANG', 'SELENDANG MELAYANG', 'GONDOL!', 'SARANG AREN'], status: 'MENGINTAI ANAK',
+      moves: ['Tiga cakaran tangan yang memanjang', 'Selendang terbang lalu kembali ke tangan', 'Tangan memanjang menyeret lawan mendekat', 'Tiga pusaran selendang raksasa pulang-pergi'],
+      cutin: { top: 'SARANG', bottom: 'AREN', detail: 'TIGA PUSARAN SELENDANG' }, voice: false
     },
-    naja: {
-      id: 'llorona', name: 'LA LLORONA', tag: 'THE WEEPING RIVER', title: 'WEEPING RIVER', faction: 'mancanegara', origin: 'Meksiko',
-      detail: 'Air matanya mengalir sampai ke sungai. Jangan dekat-dekat.', style: 'Mid-range / selendang panjang dan arus sungai', color: '#9fd0e8',
-      names: ['SELENDANG RATAPAN', 'AIR MATA SUNGAI', 'PUSARAN SUNGAI', 'BANJIR RATAPAN'], status: 'SUNGAI MENANGIS',
-      cutin: { top: 'BANJIR', bottom: 'RATAPAN', detail: 'TIGA TANGAN SUNGAI MUNCUL' }, voice: false
+    haldor: {
+      id: 'genderuwo', name: 'GENDERUWO', tag: 'SI PENUNGGU BERINGIN', title: 'PENUNGGU BERINGIN', faction: 'halus', origin: 'Jawa',
+      lore: 'Makhluk raksasa berbulu lebat di sekujur tubuh yang tinggal di pohon besar atau bangunan tua. Suka melempar batu dan bisa menyamar menjadi orang yang dikenal.',
+      detail: 'Batu pertamanya selalu peringatan.', style: 'Heavy tank / lempar batu dan serudukan', color: '#a8744a',
+      names: ['TINJU RIMBA', 'LEMPAR BATU GAIB', 'SERUDUK RIMBA', 'AMUK BERINGIN'], status: 'RIMBA BANGUN',
+      moves: ['Rantai pukulan paling berat', 'Batu melambung ke tempat lawan berdiri', 'Serudukan bahu', 'Tiga hantaman tanah di depannya'],
+      cutin: { top: 'AMUK', bottom: 'BERINGIN', detail: 'TIGA HANTAMAN PENUNGGU BERINGIN' }, voice: false
     },
     solan: {
-      id: 'banshee', name: 'BANSHEE', tag: 'THE KEENING HERALD', title: 'KEENING HERALD', faction: 'mancanegara', origin: 'Irlandia',
-      detail: 'Ratapannya datang lebih dulu. Kabar buruknya menyusul.', style: 'Powerhouse / gelombang ratapan dan terkaman kabut', color: '#bcd7ee',
-      names: ['TANGAN KABUT', 'RATAPAN', 'TERKAM KABUT', 'KEENING'], status: 'SUARA TERTAHAN',
-      cutin: { top: 'THE', bottom: 'KEENING', detail: 'TIGA GELOMBANG RATAPAN' }, voice: false
+      id: 'eyangsukmocapo', name: 'EYANG SUKMO CAPO', tag: 'SANG PENJAGA KERAMAT', title: 'PENJAGA KERAMAT', faction: 'halus', origin: 'Jawa',
+      lore: 'Jin atau arwah leluhur dalam tradisi Jawa yang dikaitkan dengan penjaga tempat-tempat keramat. Tenang dan sabar, tapi tak memaafkan yang mengusik wilayahnya.',
+      detail: 'Yang muda boleh lewat. Yang lancang tidak.', style: 'Powerhouse / tongkat pusaka dan tenaga dalam', color: '#d8b56a',
+      names: ['TONGKAT PUSAKA', 'GELOMBANG SUKMA', 'HENTAK BUMI', 'SABDA KERAMAT'], status: 'NAPAS TERATUR',
+      moves: ['Tiga ayunan tongkat pusaka', 'Gelombang tenaga dalam setinggi dada', 'Melompat lalu menghentak tanah', 'Tiga gelombang sabda keramat'],
+      cutin: { top: 'SABDA', bottom: 'KERAMAT', detail: 'TIGA GELOMBANG TENAGA DALAM' }, voice: false
+    },
+    fenr: {
+      id: 'leyak', name: 'LEYAK', tag: 'SI API MALAM', title: 'API MALAM', faction: 'hitam', origin: 'Bali',
+      lore: 'Penganut ilmu hitam dari Bali yang berubah wujud di malam hari. Dalam kisahnya ia bisa menjadi bola api atau kepala terbang dengan organ tergantung, mencari darah bayi atau perempuan hamil.',
+      detail: 'Malam hari ia berganti rupa. Apinya tidak.', style: 'Shapeshifter / api leyak dan wujud api', color: '#f29b3a',
+      names: ['CAKAR BARA', 'API LEYAK', 'TERJANG MALAM', 'MALAM PENGLEAKAN'],
+      beast: { cls: 'WUJUD API', deck: 'LEYAK · API', names: ['CAKAR GENI', 'TERKAM GENI', 'PEKIK MALAM', 'MALAM PENGLEAKAN'], status: 'TERBAKAR', timer: 'GENI' },
+      moves: ['Tiga cakaran bara', 'Bola api melesat lurus', 'Terjangan dua tangan', 'Berubah ke wujud api 12 detik: serangan lebih kuat dan cepat'],
+      status: 'API MENYALA', cutin: { top: 'MALAM', bottom: 'PENGLEAKAN', detail: 'BERUBAH KE WUJUD API' }, voice: false
+    },
+    cora: {
+      id: 'kuyang', name: 'KUYANG', tag: 'SI KEPALA TENGAH MALAM', title: 'KEPALA MALAM', faction: 'hitam', origin: 'Kalimantan',
+      lore: 'Penganut ilmu hitam dari Kalimantan yang melepas kepalanya di malam hari. Kepala itu terbang dengan organ tergantung, mencari darah persalinan.',
+      detail: 'Tengah malam, kepalanya pergi berburu sendiri.', style: 'Agile / pita arwah dan kepala terbang', color: '#d0505a',
+      names: ['CAKAR MALAM', 'PITA ARWAH', 'KIBAS RAMBUT', 'PESTA KUYANG'], status: 'KEPALA LAPAR',
+      moves: ['Tiga cakaran cepat', 'Kipas tiga pita arwah', 'Kibasan rambut yang menyapu', 'Kawanan kepala terbang menyapu arena tiga kali'],
+      cutin: { top: 'PESTA', bottom: 'KUYANG', detail: 'TIGA SAPUAN KEPALA TERBANG' }, voice: false
     },
     rhea: {
-      id: 'bloodymary', name: 'BLOODY MARY', tag: 'THE MIRROR WITCH', title: 'MIRROR WITCH', faction: 'mancanegara', origin: 'Inggris / Amerika',
-      detail: 'Sebut namanya tiga kali. Lalu jangan menoleh.', style: 'Zoner / cermin melayang dan panggilan cermin', color: '#c7485e',
-      names: ['PECAHAN KACA', 'CERMIN MELAYANG', 'PANGGIL TIGA KALI', 'CERMIN SERIBU'], status: 'CERMIN MENUNGGU',
-      cutin: { top: 'CERMIN', bottom: 'SERIBU', detail: 'TIGA CERMIN RAKSASA MENGORBIT' }, voice: false
+      id: 'palasik', name: 'PALASIK', tag: 'SI KEPALA MELAYANG', title: 'KEPALA MELAYANG', faction: 'hitam', origin: 'Sumatra Barat',
+      lore: 'Makhluk dari ilmu hitam Minangkabau berupa kepala tanpa badan yang melayang untuk mengisap sari bayi atau janin, bahkan dari jauh.',
+      detail: 'Ia tak perlu menyentuh. Cukup dekat.', style: 'Zoner / kepala melayang dan isapan jarak jauh', color: '#e0503c',
+      names: ['GIGIT MELAYANG', 'KEPALA MENGAMBANG', 'ISAP SARI', 'TIGA KEPALA'], status: 'MENCIUM BAU',
+      moves: ['Tiga terjangan kepala', 'Kepala kecil melayang pelan melintasi arena', 'Pusaran isap 230 piksel di depan', 'Tiga kepala raksasa mengorbit'],
+      cutin: { top: 'TIGA', bottom: 'KEPALA', detail: 'TIGA KEPALA MENGORBIT' }, voice: false
+    },
+    nib: {
+      id: 'tuyul', name: 'TUYUL', tag: 'SI PENCURI KECIL', title: 'PENCURI KECIL', faction: 'hitam', origin: 'Jawa',
+      lore: 'Makhluk halus berwujud anak kecil botak yang dipelihara manusia untuk mencuri uang secara gaib. Katanya mudah teralihkan oleh kacang hijau dan kepiting.',
+      detail: 'Kecil, gundul, dan dompetmu sudah kosong.', style: 'Rushdown / koin lempar dan copet kilat', color: '#e6c25a',
+      names: ['GIGIT KECIL', 'LEMPAR KOIN', 'COPET KILAT', 'PESUGIHAN KILAT'], status: 'KANTONG TERBUKA',
+      moves: ['Rantai pukulan tercepat', 'Koin dilempar datar paling cepat', 'Dash; kalau kena menyelinap ke belakang lawan', 'Tiga karung koin mengejar lawan'],
+      cutin: { top: 'PESUGIHAN', bottom: 'KILAT', detail: 'TIGA KARUNG KOIN PENGEJAR' }, voice: false
     },
     mira: {
-      id: 'dullahan', name: 'DULLAHAN', tag: 'THE HEADLESS RIDER', title: 'HEADLESS RIDER', faction: 'mancanegara', origin: 'Irlandia',
-      detail: 'Kepalanya di tangan. Namamu sudah di bibirnya.', style: 'Heavy / tatapan kepala dan terjangan ksatria', color: '#7fa6d9',
-      names: ['CAMBUK RANTAI', 'TATAPAN KEPALA', 'TERJANG KSATRIA', 'KERETA MAUT'], status: 'NAMA DISEBUT',
-      cutin: { top: 'KERETA', bottom: 'MAUT', detail: 'DUA BELAS API ARWAH BERJATUHAN' }, voice: false
+      id: 'jenglot', name: 'JENGLOT', tag: 'SI BONEKA HAUS', title: 'BONEKA HAUS', faction: 'hitam', origin: 'Jawa',
+      lore: 'Makhluk mistis sangat kecil mirip boneka manusia dengan rambut dan kuku panjang. Dipercaya hidup dan meminum darah pemeliharanya.',
+      detail: 'Kecil di lemari. Besar di mimpi buruk.', style: 'Swarm / kuku terbang dan hujan jenglot', color: '#c0453a',
+      names: ['CAKAR JENGLOT', 'KUKU TERBANG', 'TERKAM JENGLOT', 'HUJAN JENGLOT'], status: 'HAUS',
+      moves: ['Tiga cakaran kuku panjang', 'Kuku dilempar lurus', 'Terkaman menerjang', 'Dua belas jenglot berjatuhan ke arena'],
+      cutin: { top: 'HUJAN', bottom: 'JENGLOT', detail: 'DUA BELAS JENGLOT BERJATUHAN' }, voice: false
+    },
+    naja: {
+      id: 'beguganjang', name: 'BEGU GANJANG', tag: 'SI TINGGI DARI TOBA', title: 'TINGGI MENJULANG', faction: 'hitam', origin: 'Batak, Sumatra Utara',
+      lore: 'Makhluk halus bertubuh sangat tinggi dari mitologi Batak. Dipercaya dipelihara seseorang untuk mencelakai musuhnya, dan makin tinggi makin dilihat.',
+      detail: 'Jangan menengadah. Ia tumbuh saat kau menatapnya.', style: 'Mid-range / jangkauan terpanjang dan bayang merayap', color: '#8a9aa8',
+      names: ['TANGAN GANJANG', 'BAYANG MERAYAP', 'PUTARAN GANJANG', 'BEGU MENJULANG'], status: 'MENUNGGU DITATAP',
+      moves: ['Jangkauan basic terpanjang di roster', 'Bayang merayap di tanah', 'Putaran lengan ke depan dan belakang', 'Bayangan mengejar lalu tubuhnya menjulang tiga kali'],
+      cutin: { top: 'BEGU', bottom: 'MENJULANG', detail: 'MENJULANG TIGA KALI DARI TANAH' }, voice: false
     }
   };
   for (const g of Object.values(GHOSTS)) g.cls = FACTIONS[g.faction].label;
 
-  // Skill names live in each kit; point them at the ghost names so the HUD, touch buttons and logs all agree.
+  // Skill names live in each kit; point them at the dedemit names so the HUD, touch buttons and logs all agree.
   const kits = { mira: window.Mira, cora: window.Cora, naja: window.Naja, haldor: window.Haldor, zanni: window.Zanni, isolde: window.Isolde, rhea: window.Rhea, solan: window.Solan, nib: window.Nib, edda: window.Edda };
   for (const [slot, kit] of Object.entries(kits)) if (kit && Array.isArray(kit.names)) kit.names = [...GHOSTS[slot].names];
   if (window.Fenr?.kits) { window.Fenr.kits.human.names = [...GHOSTS.fenr.names]; window.Fenr.kits.wolf.names = [...GHOSTS.fenr.beast.names]; }
 
-  // Old announcer clips say the previous fighter names; drop them for ghosts without new recordings.
+  // Old announcer clips say the previous fighter names; drop them for dedemit without new recordings.
   const clips = window.ANNOUNCER_MANIFEST?.clips;
   if (clips) for (const [slot, g] of Object.entries(GHOSTS)) if (!g.voice) { delete clips['select_' + slot]; delete clips[slot + '_wins']; }
 

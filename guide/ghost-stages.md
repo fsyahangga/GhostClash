@@ -1,14 +1,20 @@
-# Arena GHOST CLASH
+# Arena PERANG DEDEMIT
 
-Lima arena bertema tempat angker Indonesia. Nama, tagline, dan label waktu sudah dipasang di [match.js](../match.js); gambar latarnya masih bawaan Aether Clash sampai gambar baru dibuat dengan prompt di bawah. Aturan komposisi, model, dan cara mengukur lantai mengikuti [stage-background.md](stage-background.md).
+Lima arena malam bertema tempat angker Nusantara. Gambar sumber (1672×941) ada di `assets/ghosts/arena/`; versi game 1280×720 menimpa file slot lama, dan nama, tagline, waktu, serta `groundY` ada di [match.js](../match.js).
 
-| # | Arena | ID slot | File yang ditimpa | Tagline | Waktu | Cocok untuk |
+| Arena | ID slot | Sumber | File game | groundY | Tagline | Waktu |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Rumah Kosong | `bellora` | `assets/stage.webp` | Jendelanya tak pernah ditutup | Malam Jumat Kliwon | Kuntilanak, Pocong |
-| 2 | Pabrik Gula Tua | `sunspire` | `assets/menu/sunspire.webp` | Mesinnya berhenti, giling tetap berbunyi | Tengah malam | Genderuwo, Tuyul |
-| 3 | Makam Kamboja | `harbor` | `assets/menu/azure-harbor.webp` | Bunga kamboja jatuh tanpa angin | Kabut magrib | Pocong, Jiangshi |
-| 4 | Hutan Larangan | `elderwood` | `assets/menu/elderwood.webp` | Jangan bersiul di bawah beringin | Malam berkabut | Genderuwo, Kuyang |
-| 5 | Candi Purnama | `moonrise` | `assets/menu/moonrise.webp` | Leyak menari saat bulan penuh | Bulan purnama | Leyak, Banshee |
+| Rumah Kosong | `bellora` | `arena/rumah.webp` | `assets/stage.webp` | 600 | Pendopo tua yang lampunya tak pernah padam | Malam Jumat Kliwon |
+| Pabrik Gula Tua | `sunspire` | `arena/pabrik.webp` | `assets/menu/sunspire.webp` | 600 | Mesinnya berhenti, giling tetap berbunyi | Tengah malam |
+| Makam Kamboja | `harbor` | `arena/makam.webp` | `assets/menu/azure-harbor.webp` | 600 | Bunga kamboja jatuh tanpa angin | Bulan purnama |
+| Hutan Larangan | `elderwood` | `arena/hutan.webp` | `assets/menu/elderwood.webp` | 600 | Jangan bersiul di bawah beringin | Malam berkabut |
+| Kawah Akar Geni | `moonrise` | `arena/kawah.webp` | `assets/menu/moonrise.webp` | 572 | Akar tua menyimpan bara gunung | Bulan sabit |
+
+`groundY` diukur dari pita lantai tiap gambar di ukuran 1280×720 (garis kaki petarung). Kawah Akar Geni lebih tinggi karena di bawah pita tanahnya ada akar. Key art menu utama (`assets/menu/home-dedemit.webp`) memakai Makam Kamboja dengan barisan dedemit di depannya.
+
+Mengganti satu arena: skala gambar baru ke 1280×720 (resample BOX), simpan sebagai WebP dengan nama file di tabel, ukur garis lantainya (skrip di [stage-background.md](stage-background.md)), isi `groundY` di match.js, lalu jalankan `node guide/tools/update_precache.mjs`.
+
+Prompt di bawah adalah prompt awal untuk empat arena pertama; Candi Purnama sudah diganti Kawah Akar Geni.
 
 ## Aturan umum
 

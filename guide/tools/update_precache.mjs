@@ -5,11 +5,13 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 
-const EXTRA = ['ghosts.js'];
+const EXTRA = ['ghosts.js', 'dedemit.css', 'assets/menu/home-dedemit.webp', 'assets/fonts/im-fell-english-latin-400-normal.woff2', 'assets/fonts/im-fell-english-latin-400-italic.woff2'];
+// Files the game no longer loads (old Aether Clash home video and poster).
+const DROP = ['assets/menu/home-factions-loop.mp4', 'assets/menu/home-factions.webp'];
 const sandbox = { self: {} };
 vm.runInNewContext(readFileSync('precache.js', 'utf8'), sandbox);
 const old = sandbox.self.AETHER_PRECACHE;
-const paths = [...old.files.map(f => f[0])];
+const paths = old.files.map(f => f[0]).filter(p => !DROP.includes(p));
 for (const p of EXTRA) if (!paths.includes(p)) paths.splice(Math.max(0, paths.indexOf('game.js')), 0, p);
 
 const hash = buf => createHash('sha1').update(buf).digest('hex').slice(0, 12);

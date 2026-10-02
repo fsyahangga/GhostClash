@@ -11,15 +11,14 @@
     hard:{label:'Hard',speed:1.22,recovery:.22,reaction:.13,combo:3,skillEvery:1,ultimateAfter:5,aggression:.9,evade:.78,punish:.82,antiAir:.78,ender:.85,mistakes:.03,wake:.06,immunity:.9,comboCap:4},
     excellent:{label:'Excellent',speed:1.32,recovery:.12,reaction:.08,combo:3,skillEvery:1,ultimateAfter:3.5,aggression:.97,evade:.92,punish:.95,antiAir:.9,ender:1,mistakes:0,wake:.02,immunity:.9,comboCap:4}
   };
-  // GHOST CLASH arenas. The ids stay the engine's stage slots; replace each image file in place with the ghost art from
-  // guide/ghost-stages.md, then re-measure groundY on the new floor band (guide/stage-background.md).
+  // PERANG DEDEMIT arenas. The ids stay the engine's stage slots; the 1280x720 pictures come from assets/ghosts/arena
+  // (sources) and groundY is the measured standing line on each floor band.
   const stages={
-    bellora:{name:'Rumah Kosong',short:'RUMAH',subtitle:'KOSONG',image:'assets/stage.webp',groundY:599,tag:'Jendelanya tak pernah ditutup',time:'MALAM JUMAT KLIWON'},
-    sunspire:{name:'Pabrik Gula Tua',short:'PABRIK',subtitle:'GULA TUA',image:'assets/menu/sunspire.webp',groundY:599,tag:'Mesinnya berhenti, giling tetap berbunyi',time:'TENGAH MALAM'},
-    harbor:{name:'Makam Kamboja',short:'MAKAM',subtitle:'KAMBOJA',image:'assets/menu/azure-harbor.webp',groundY:599,tag:'Bunga kamboja jatuh tanpa angin',time:'KABUT MAGRIB'},
-    // groundY measured on the old 1280x720 floor band (elderwood 560-655, moonrise 570-705); re-measure after new art.
-    elderwood:{name:'Hutan Larangan',short:'HUTAN',subtitle:'LARANGAN',image:'assets/menu/elderwood.webp',groundY:606,tag:'Jangan bersiul di bawah beringin',time:'MALAM BERKABUT'},
-    moonrise:{name:'Candi Purnama',short:'CANDI',subtitle:'PURNAMA',image:'assets/menu/moonrise.webp',groundY:618,tag:'Leyak menari saat bulan penuh',time:'BULAN PURNAMA'}
+    bellora:{name:'Rumah Kosong',short:'RUMAH',subtitle:'KOSONG',image:'assets/stage.webp',groundY:600,tag:'Pendopo tua yang lampunya tak pernah padam',time:'MALAM JUMAT KLIWON'},
+    sunspire:{name:'Pabrik Gula Tua',short:'PABRIK',subtitle:'GULA TUA',image:'assets/menu/sunspire.webp',groundY:600,tag:'Mesinnya berhenti, giling tetap berbunyi',time:'TENGAH MALAM'},
+    harbor:{name:'Makam Kamboja',short:'MAKAM',subtitle:'KAMBOJA',image:'assets/menu/azure-harbor.webp',groundY:600,tag:'Bunga kamboja jatuh tanpa angin',time:'BULAN PURNAMA'},
+    elderwood:{name:'Hutan Larangan',short:'HUTAN',subtitle:'LARANGAN',image:'assets/menu/elderwood.webp',groundY:600,tag:'Jangan bersiul di bawah beringin',time:'MALAM BERKABUT'},
+    moonrise:{name:'Kawah Akar Geni',short:'KAWAH',subtitle:'AKAR GENI',image:'assets/menu/moonrise.webp',groundY:572,tag:'Akar tua menyimpan bara gunung',time:'BULAN SABIT'}
   };
   function introTiming(m){const clips=window.ANNOUNCER_MANIFEST?.clips;m.fightAt=Math.max(1.05,(clips?.['round_'+m.round]?.duration||0)+.12);m.introDuration=Math.max(1.85,m.fightAt+(clips?.fight?.duration||0)+.10);}
   function create(mode='training') {const m={mode,phase:mode==='versus'?'intro':'fight',round:1,playerWins:0,enemyWins:0,seconds:90,phaseTime:0,fightCue:false,lastWinner:null,winner:null,koDuration:2.2};introTiming(m);return m;}

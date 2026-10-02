@@ -185,7 +185,7 @@
     selectedCharacter=player;opponentCharacter=enemy;stageId=stage;difficulty=level;images.stage=images['stage-'+stage];CONFIG.groundY=Rules.stages[stage].groundY;
     aiEnabled=mode==='versus';match=Rules.create(mode);roundCues.length=0;setMenuOpen(false);resetCombat();warmCutins();
     $('#ai-toggle').checked=aiEnabled;$('#character-select').value=selectedCharacter;document.body.classList.toggle('in-versus',mode==='versus');
-    if(mode==='versus'){announceTimer=0;emitRoundCue('round',1);}else announce('TRAINING READY',1.3);
+    if(mode==='versus'){announceTimer=0;emitRoundCue('round',1);}else announce('LATIHAN DIMULAI',1.3);
     return true;
   }
   function emitRoundCue(cue,round) {
@@ -214,14 +214,14 @@
   function updateMatchHud() {
     if(!Rules)return;
     const versus=match?.mode==='versus',s=Rules.stages[stageId];
-    $('#mode-label').textContent=versus?`ROUND ${match.round} / 3`:'FREE TRAINING';$('#match-clock').textContent=versus?String(Math.ceil(match.seconds)).padStart(2,'0'):'∞';
+    $('#mode-label').textContent=versus?`ROUND ${match.round} / 3`:'LATIHAN BEBAS';$('#match-clock').textContent=versus?String(Math.ceil(match.seconds)).padStart(2,'0'):'∞';
     $('.match-center').setAttribute('aria-label',versus?'Pertandingan, menang dua ronde dari maksimal tiga':'Mode latihan tanpa batas waktu');
     $('#match-score').textContent=versus?`${match.playerWins} — ${match.enemyWins}`:'VS';$('#stage-name').textContent=s.short;$('#stage-subtitle').textContent=s.subtitle;
     $('#round-wins-player').textContent=versus?'◆'.repeat(match.playerWins)+'◇'.repeat(2-match.playerWins):'';$('#round-wins-enemy').textContent=versus?'◆'.repeat(match.enemyWins)+'◇'.repeat(2-match.enemyWins):'';
     const card=$('#round-call'),show=!menuOpen&&versus&&['intro','ko'].includes(match.phase);
     card.hidden=!show;card.dataset.phase=match?.phase||'fight';
     $('#round-call-title').textContent=!show?'':match.phase==='intro'?(match.fightCue?'FIGHT':`ROUND ${match.round}`):match.endText||'K.O.';
-    $('#round-call-detail').textContent=match?.phase==='ko'?(match.lastWinner==='draw'?'DRAW · ROUND REPLAY':ghostName(match.lastWinner==='player'?selectedCharacter:opponentCharacter)+' WINS THE ROUND'):'FIRST TO TWO WINS';
+    $('#round-call-detail').textContent=match?.phase==='ko'?(match.lastWinner==='draw'?'DRAW · ROUND REPLAY':ghostName(match.lastWinner==='player'?selectedCharacter:opponentCharacter)+' WINS THE ROUND'):'DUA KALI MENANG';
     canvas.dataset.mode=match?.mode||'training';canvas.dataset.matchPhase=match?.phase||'fight';canvas.dataset.round=String(match?.round||1);canvas.dataset.opponent=opponentCharacter;canvas.dataset.difficulty=difficulty;canvas.dataset.stage=stageId;
   }
 
@@ -310,7 +310,7 @@
     Object.assign(dummy, { x: 915, y: CONFIG.groundY, vx: 0, vy: 0, state: 'idle', stateTime: 0, damage: 0, ko:false, flash: 0, invuln: 0, angle: 0 });
     if(F) {F.reset(hero);F.reset(dummy);Object.assign(dummy,{facing:-1,action:null,cooldowns:{skill1:0,skill2:0,ultimate:0},aiThink:.4,aiTime:0,aiChain:0,walkPhase:0,jumps:0});cpu={seen:new WeakMap(),decided:new WeakSet(),read:null,heroActionAt:0,heroAction:null,airborne:false,airAt:0,antiAirRead:false,plan:null,doubleAt:0};syncPlayerForm();}
     fenrCutin=null;hudIdentity='';
-    particles.length = effects.length = projectiles.length = damageNumbers.length = 0; totalDamage = comboHits = bestCombo = comboDamage = comboTimer = hitstop = trauma = cinematic = 0; clearInput(); setPaused(false); announce('TRAINING READY', 1.25);
+    particles.length = effects.length = projectiles.length = damageNumbers.length = 0; totalDamage = comboHits = bestCombo = comboDamage = comboTimer = hitstop = trauma = cinematic = 0; clearInput(); setPaused(false); announce('LATIHAN DIMULAI', 1.25);
     squad = null; enemySquad = null; parade = null; enemyParade = null; flock = null; enemyFlock = null; serpent = null; enemySerpent = null; quake = null; enemyQuake = null; finale = null; enemyFinale = null; skyfall = null; enemySkyfall = null; orrery = null; enemyOrrery = null; sunroar = null; enemySunroar = null; delivery = null; enemyDelivery = null; tortoise = null; enemyTortoise = null;
     for(const name of Object.keys(rechargePulse)) rechargePulse[name]=0;
   }
@@ -834,7 +834,8 @@
     if(F && !['down','recover'].includes(dummy.state) && hero.y>CONFIG.groundY-130 && dummy.y>CONFIG.groundY-130 && Math.abs(dummy.x-hero.x)<bodyGap())dummy.x=clamp(hero.x+(dummy.x>=hero.x?bodyGap():-bodyGap()),110,W-100);
     // Versus CPU follows the player's post-hurt immunity rule by difficulty, so a mashed chain cannot loop it forever.
     // Its stun lasts 0.5 s there, which still covers every 3-hit chain gap; the training dummy stays open for practice.
-    if (dummy.state === 'hurt' && dummy.stateTime > (F && aiEnabled && match?.mode === 'versus' ? .5 : .4)) { dummy.state = dummy.y < CONFIG.groundY ? 'jump' : 'idle'; dummy.stateTime = 0; if (F && aiEnabled && match?.mode === 'versus') dummy.invuln = Math.max(dummy.invuln, cpuProfile().immunity); }
+    if (dummy.bindTime > 0) { dummy.bindTime -= dt; dummy.vx = 0; }
+    if (dummy.state === 'hurt' && !(dummy.bindTime > 0) && dummy.stateTime > (F && aiEnabled && match?.mode === 'versus' ? .5 : .4)) { dummy.state = dummy.y < CONFIG.groundY ? 'jump' : 'idle'; dummy.stateTime = 0; if (F && aiEnabled && match?.mode === 'versus') dummy.invuln = Math.max(dummy.invuln, cpuProfile().immunity); }
     if (dummy.state !== 'down' && (dummy.y < CONFIG.groundY || dummy.vy < 0)) { dummy.vy += CONFIG.gravity * dt; dummy.y += dummy.vy * dt; if (dummy.y >= CONFIG.groundY) { dummy.y = CONFIG.groundY; dummy.vy = 0; dummy.jumps = 0; cpu.doubleAt = 0; if (dummy.state === 'jump') { dummy.state = 'idle'; dummy.stateTime = 0; } dust(dummy.x, 8); } }
     if (dummy.state === 'down') { if (dummy.y < CONFIG.groundY || dummy.vy < 0) { dummy.vy += CONFIG.gravity * dt; dummy.y += dummy.vy * dt; if (dummy.y >= CONFIG.groundY) { dummy.y = CONFIG.groundY; dummy.vy = 0; dust(dummy.x, 24); trauma = Math.min(1, trauma + .3); } } if (dummy.stateTime > 1.7 && match?.mode!=='versus') { dummy.state = 'recover'; dummy.stateTime = 0; } }
     if (dummy.state === 'recover' && dummy.stateTime > .4) { dummy.state = 'idle'; dummy.stateTime = 0; if(dummy.ko) dummy.damage = 0; dummy.ko=false; dummy.invuln = .5; }
@@ -871,13 +872,22 @@
       }
       if (p.spent) { if (p.life <= 0) projectiles.splice(i, 1); continue; }
       if(p.owner==='enemy') {
-        if(Math.min(oldX,p.x)<=hero.x+28&&Math.max(oldX,p.x)>=hero.x-28&&Math.abs(p.y-(hero.y-85))<(p.tall||75)&&window.__game.receiveHit(p.damage,{projectile:true,freeze:p.freeze}))p.boomerang?(p.spent=true,p.returning=true):p.orbit?(p.spent=true):p.life=0;
+        if(Math.min(oldX,p.x)<=hero.x+28&&Math.max(oldX,p.x)>=hero.x-28&&Math.abs(p.y-(hero.y-85))<(p.tall||75)&&window.__game.receiveHit(p.damage,{projectile:true,freeze:p.freeze})&&bindHit(p,hero))p.boomerang?(p.spent=true,p.returning=true):p.orbit?(p.spent=true):p.life=0;
         if(p.life<=0||p.x<-100||p.x>W+100)projectiles.splice(i,1);continue;
       }
       // Swept x interval keeps a high-speed bolt from tunneling through a target.
-      if (Math.min(oldX, p.x) <= dummy.x + 30 && Math.max(oldX, p.x) >= dummy.x - 30 && Math.abs(p.y - (dummy.y - (F?95:68))) < (p.tall || (F?90:66)) && dummy.state !== 'down' && dummy.state !== 'recover') { if (hitDummy(p.damage||BALANCE.skill1.damage, p.knockback ?? BALANCE.skill1.knockback, p.color || '#94ffde', oldX, p.y, false, false)) { if (p.boomerang) { p.spent = true; p.returning = true; } else if (p.orbit) p.spent = true; else p.life = 0; } }
+      if (Math.min(oldX, p.x) <= dummy.x + 30 && Math.max(oldX, p.x) >= dummy.x - 30 && Math.abs(p.y - (dummy.y - (F?95:68))) < (p.tall || (F?90:66)) && dummy.state !== 'down' && dummy.state !== 'recover') { if (hitDummy(p.damage||BALANCE.skill1.damage, p.knockback ?? BALANCE.skill1.knockback, p.color || '#94ffde', oldX, p.y, false, false) && bindHit(p, dummy)) { if (p.boomerang) { p.spent = true; p.returning = true; } else if (p.orbit) p.spent = true; else p.life = 0; } }
       if (p.life <= 0 || p.x < -100 || p.x > W + 100) projectiles.splice(i, 1);
     }
+  }
+  // PERANG DEDEMIT: a projectile with bind (seconds) ties its target in place, e.g. Pocong's Tali Pocong. The player's
+  // hurt timer grows; the CPU's hurt state is held by bindTime. Both stop sliding, and a rope effect follows them.
+  function bindHit(p, a) {
+    if (!p.bind) return true;
+    if (a === hero) hero.hurtTime += p.bind; else dummy.bindTime = p.bind;
+    a.vx = 0;
+    effects.push({ type: 'bind', follow: a === hero ? 'hero' : 'dummy', x: a.x, y: a.y - 80, life: p.bind + .25, maxLife: p.bind + .25, color: p.bindColor || '#e9e2cf' });
+    return true;
   }
   function syncPlayerForm() {
     if(selectedCharacter==='fenr') {const wolf=hero.form==='wolf';manifest=wolf?window.FENR_WOLF_MANIFEST:window.FENR_HUMAN_MANIFEST;metrics=wolf?window.FENR_WOLF_METRICS:window.FENR_HUMAN_METRICS;images.hero=images[wolf?'fenrWolf':'fenrHuman'];Object.assign(cooldownMax,F.balance.cooldowns);}
@@ -1029,7 +1039,7 @@
     if(move.projectile){
       // Sky Piercer: an ice bolt from the lance point on a rising line (IS.piercer.rise): anti-air, close ground poke.
       const P=IS.piercer,x=actor.x+actor.facing*Math.round((em?.x??140)*.8),y=actor.y-P.y;
-      projectiles.push({x,y,vx:actor.facing*P.speed,vy:-P.speed*P.rise,life:1.1,facing:actor.facing,owner:enemy?'enemy':'player',damage:move.damage,knockback:move.knockback,asset:'isolde-piercer',size:96,color:'#bfe6ff'});
+      projectiles.push({x,y,vx:actor.facing*P.speed,vy:-P.speed*P.rise,life:1.1,facing:actor.facing,owner:enemy?'enemy':'player',damage:move.damage,knockback:move.knockback,asset:'isolde-piercer',size:96,color:'#bfe6ff',bind:P.bind||0});
       effects.push({type:'muzzle',x,y,life:.2,maxLife:.2,color:'#dff3ff'});spawnParticles(x,y,'#dff3ff',10,160);sound('cast');return;
     }
     if(move.type==='attack')effects.push({type:'whip',x:actor.x,y:hy,facing:actor.facing,tip:em?.x??move.reach+25,life:.18,maxLife:.18,index:move.index,color:move.index===3?'#eaf7ff':'#bfe6ff'});
@@ -1394,7 +1404,7 @@
   }
   function updateVisuals(dt) {
     for (let i = particles.length - 1; i >= 0; i--) { const p = particles[i]; p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += (p.kind === 'dust' || p.kind==='run-smoke' ? -40 : 680) * dt; p.vx *= Math.exp(-dt * 3); if (p.life <= 0) particles.splice(i, 1); }
-    for (let i = effects.length - 1; i >= 0; i--) { effects[i].life -= dt; if (effects[i].life <= 0) effects.splice(i, 1); }
+    for (let i = effects.length - 1; i >= 0; i--) { const e = effects[i]; if (e.follow) { const a = e.follow === 'hero' ? hero : dummy; e.x = a.x; e.y = a.y - 80; } e.life -= dt; if (e.life <= 0) effects.splice(i, 1); }
     for (let i = damageNumbers.length - 1; i >= 0; i--) { damageNumbers[i].life -= dt; damageNumbers[i].y -= dt * 55; if (damageNumbers[i].life <= 0) damageNumbers.splice(i, 1); }
   }
 
@@ -1478,6 +1488,8 @@
     for (const e of effects) {
       const t = 1 - e.life / e.maxLife; ctx.save(); ctx.translate(Math.round(e.x), Math.round(e.y)); ctx.globalAlpha = Math.min(1, e.life / e.maxLife * 2); ctx.lineCap = 'square';
       if((e.type==='fenr-fx'||e.type==='mira-fx'||e.type==='cora-fx'||e.type==='naja-fx'||e.type==='haldor-fx'||e.type==='zanni-fx'||e.type==='isolde-fx'||e.type==='rhea-fx'||e.type==='solan-fx'||e.type==='nib-fx'||e.type==='edda-fx') && images['fx-'+e.asset]){ctx.scale(e.facing||1,1);const size=e.size*(.75+t*.4);ctx.drawImage(images['fx-'+e.asset],-size/2,-size/2,size,size);}
+      // Tali Pocong: three shroud-rope loops tighten around the bound fighter, with knots on the near side.
+      if (e.type === 'bind') { const k = Math.min(1, t * 5), squeeze = 1.25 - .25 * k; for (const [dy, rx] of [[-55, 34], [-5, 40], [45, 30]]) { for (const [w, c] of [[7, '#2a2418'], [4, e.color]]) { ctx.strokeStyle = c; ctx.lineWidth = w; ctx.beginPath(); ctx.ellipse(0, dy, rx * squeeze, 9 * squeeze, 0, 0, Math.PI * 2); ctx.stroke(); } ctx.fillStyle = e.color; ctx.fillRect(rx * squeeze - 4, dy - 5, 9, 10); } }
       // EDDA's tortoise spirit keeps one size; it fades in and out and lifts before each stomp.
       if(e.type==='edda-spirit'&&images['fx-'+e.asset]){ctx.globalAlpha=Math.min(1,t*6,(1-t)*5)*.92;ctx.scale(e.facing||1,1);ctx.drawImage(images['fx-'+e.asset],-e.size/2,-e.size-e.lift,e.size,e.size);}
       if (e.type === 'slash') { ctx.scale(e.facing, 1); ctx.rotate(e.index === 2 ? -.5 : .15); ctx.strokeStyle = e.color; ctx.lineWidth = 9 * (1 - t) + 2; ctx.beginPath(); ctx.arc(10, 4, 55 + e.index * 10, -1.2 + t * .3, 1.0 + t * .4); ctx.stroke(); ctx.strokeStyle = '#ffffffaa'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(4, 4, 46 + e.index * 10, -.85, .7); ctx.stroke(); }
@@ -1657,7 +1669,7 @@
     const h=hpLayers(hero.hp), dh=hpLayers(currentDummyHP());
     $('#health-fill').style.width = `${h.front}%`; $('#health-reserve').style.width = `${h.reserve}%`; $('#health-label').textContent = `${hero.hp} / ${BALANCE.heroMax}`;
     $('#guard-fill').style.width = `${dh.front}%`; $('#guard-reserve').style.width = `${dh.reserve}%`; $('#guard-label').textContent = `HP ${currentDummyHP()} / ${BALANCE.dummyMax}`;
-    $('#dummy-state').textContent = dummy.ko?'K.O.':({ idle: aiEnabled?'WATCHING':'PRACTICE', hurt: 'HIT CONFIRMED', down: 'DOWN', recover: 'RECOVERING' })[dummy.state] || (dummy.action?'ATTACKING':'APPROACHING');
+    $('#dummy-state').textContent = dummy.ko?'K.O.':({ idle: aiEnabled?'MENGINTAI':'DIAM', hurt: dummy.bindTime>0?'TERIKAT':'KENA', down: 'TUMBANG', recover: 'BANGKIT' })[dummy.state] || (dummy.action?'MENYERANG':'MENDEKAT');
     $('#combo').classList.toggle('visible', comboHits > 0); $('#combo-count').textContent = comboHits; $('#combo-damage').textContent = `${comboDamage} DAMAGE`; $('#total-damage').innerHTML = `${totalDamage} <small>DMG</small>`;
     $('#best-combo').innerHTML = `${bestCombo} <small>HITS</small>`;
     $('#announcement').classList.toggle('visible', announceTimer > 0);
@@ -1724,7 +1736,7 @@
     stopAnnouncer(){systemAnnouncer?.clear();},announcerState(){return systemAnnouncer?.snapshot()||null;},
     selectCharacter, setAI(value){aiEnabled=!!value;dummy.action=null;dummy.vx=0;dummy.state='idle';}, opponentPose,
     setPaused, setHitboxes(v) { hitboxes = !!v; $('#hitbox-toggle').checked = hitboxes; },
-    receiveHit(damage = 12,options={}) { if (menuOpen || (match&&match.phase!=='fight') || hero.hp<=0 || hero.invuln > 0) return false; if (hero.action?.guard && shellGuard(hero)) return false; if (hero.action?.type?.startsWith('skill') || hero.action?.type === 'ultimate') return false; hero.hp = Math.max(0, hero.hp - damage); hero.action = null; hero.rollBuffer = null; hero.doublePose = 0; hero.hurtTime = hero.hp>0?.42:0; hero.vx = hero.facing * -170; state(hero.hp>0?'hurt':'down'); spawnParticles(hero.x, hero.y - 75, '#ffc694', 14, 200); if(options.freeze!==false)hitstop = .05; trauma = Math.min(1, trauma + .2 * (options.shake ?? 1)); if (!hero.hp) {hero.koTime=1.7;clearInput();if(match?.mode!=='versus')announce('CORE RESTART',1.7);} return true; }
+    receiveHit(damage = 12,options={}) { if (menuOpen || (match&&match.phase!=='fight') || hero.hp<=0 || hero.invuln > 0) return false; if (hero.action?.guard && shellGuard(hero)) return false; if (hero.action?.type?.startsWith('skill') || hero.action?.type === 'ultimate') return false; hero.hp = Math.max(0, hero.hp - damage); hero.action = null; hero.rollBuffer = null; hero.doublePose = 0; hero.hurtTime = hero.hp>0?.42:0; hero.vx = hero.facing * -170; state(hero.hp>0?'hurt':'down'); spawnParticles(hero.x, hero.y - 75, '#ffc694', 14, 200); if(options.freeze!==false)hitstop = .05; trauma = Math.min(1, trauma + .2 * (options.shake ?? 1)); if (!hero.hp) {hero.koTime=1.7;clearInput();if(match?.mode!=='versus')announce('BANGKIT LAGI',1.7);} return true; }
   };
   if(F)reset();
   if(window.FRONTEND_ENABLED)setMenuOpen(true);
@@ -1733,7 +1745,7 @@
   Promise.resolve(window.AETHER_PRELOAD).then(() => Promise.all([loadImage('hero', 'assets/mecha/run/sprite-sheet-alpha.webp', true), loadImage('stage', 'assets/stage.webp', true), ...(Rules?Object.entries(Rules.stages).filter(([id])=>id!=='bellora').map(([id,s])=>loadImage('stage-'+id,s.image,true)):[]), ...(F?[loadImage('fenrHuman','assets/fenr/human/run/sprite-sheet-alpha.webp',true),loadImage('fenrWolf','assets/fenr/wolf/run/sprite-sheet-alpha.webp',true),...['claw','gale','rush','bite','howl','transform'].map(name=>loadImage('fx-'+name,'assets/fenr/ui/fx-'+name+'.webp',true))]:[]), ...(M?[loadImage('mira','assets/mira/run/sprite-sheet-alpha.webp',true),...['star','rocket','burst','crash'].map(name=>loadImage('fx-mira-'+name,'assets/mira/ui/fx-'+name+'.webp',true))]:[]), ...(C?[loadImage('cora','assets/cora/run/sprite-sheet-alpha.webp',true),...['feather','gust','raven'].map(name=>loadImage('fx-cora-'+name,'assets/cora/ui/fx-'+name+'.webp',true))]:[]), ...(N?[loadImage('naja','assets/naja/run/sprite-sheet-alpha.webp',true),...['sandwave','cyclone','serpent','ripple'].map(name=>loadImage('fx-naja-'+name,'assets/naja/ui/fx-'+name+'.webp',true))]:[]), ...(HD?[loadImage('haldor','assets/haldor/run/sprite-sheet-alpha.webp',true),...['slag','splash','steam','quake'].map(name=>loadImage('fx-haldor-'+name,'assets/haldor/ui/fx-'+name+'.webp',true))]:[]), ...(Z?[loadImage('zanni','assets/zanni/run/sprite-sheet-alpha.webp',true),...['ring','bigring','snatch','confetti'].map(name=>loadImage('fx-zanni-'+name,'assets/zanni/ui/fx-'+name+'.webp',true))]:[]), ...(IS?[loadImage('isolde','assets/isolde/run/sprite-sheet-alpha.webp',true),...['piercer','skyfall','shatter','frost'].map(name=>loadImage('fx-isolde-'+name,'assets/isolde/ui/fx-'+name+'.webp',true))]:[]), ...(RH?[loadImage('rhea','assets/rhea/run/sprite-sheet-alpha.webp',true),...['drift','planet','well','burst'].map(name=>loadImage('fx-rhea-'+name,'assets/rhea/ui/fx-'+name+'.webp',true))]:[]), ...(SO?[loadImage('solan','assets/solan/run/sprite-sheet-alpha.webp',true),...['crescent','roar','impact','sunburst'].map(name=>loadImage('fx-solan-'+name,'assets/solan/ui/fx-'+name+'.webp',true))]:[]), ...(NB?[loadImage('nib','assets/nib/run/sprite-sheet-alpha.webp',true),...['letter','plane','slip','stamp'].map(name=>loadImage('fx-nib-'+name,'assets/nib/ui/fx-'+name+'.webp',true))]:[]), ...(ED?[loadImage('edda','assets/edda/run/sprite-sheet-alpha.webp',true),...['stone','ripple','shell','tortoise','stomp'].map(name=>loadImage('fx-edda-'+name,'assets/edda/ui/fx-'+name+'.webp',true))]:[]), loadImage('drone', 'assets/ui/drone.png', true), loadImage('cutin', 'assets/ui/ultimate-cutin.webp', true)])).then(results => {
     images['stage-bellora']=images.stage;images.arco=images.hero;if(F)syncPlayerForm();
     ready = results.every(Boolean) && (!F || (!!window.FENR_HUMAN_MANIFEST && !!window.FENR_WOLF_MANIFEST)) && !!manifest && frames('idle').length > 0;
-    if (ready) { $('#load-state').classList.add('hidden'); announce('TRAINING READY', 1.65); }
+    if (ready) { $('#load-state').classList.add('hidden'); announce('LATIHAN DIMULAI', 1.65); }
     else { $('#load-state').classList.add('error'); $('#load-message').textContent = 'Aset arena belum lengkap. Periksa atlas/manifest karakter, stage.webp, drone.png, dan ultimate-cutin.webp, lalu muat ulang.'; }
     window.FrontEnd?.assetsReady(ready);
   });

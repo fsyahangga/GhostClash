@@ -1,9 +1,9 @@
 <div align="center">
 
-# 👻 GHOST CLASH
+# 👻 PERANG DEDEMIT
 
-**A 2D browser fighting game — Hantu Nusantara vs Hantu Mancanegara.**
-Twelve chibi ghosts from folklore around the world, cinematic ultimates and a CPU that reads your moves. Runs in any modern browser, on desktop and mobile, with no install.
+**A 2D browser fighting game with twelve dedemit from Indonesian folklore.**
+Makhluk Halus versus Ilmu Hitam: Pocong, Kuntilanak, Genderuwo, Tuyul, Leyak, Kuyang and more fight in five haunted arenas. Runs in any modern browser, on desktop and mobile, with no install.
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES2020-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
@@ -16,31 +16,29 @@ Twelve chibi ghosts from folklore around the world, cinematic ultimates and a CP
 
 ---
 
-GHOST CLASH is built on [Aether Clash](https://github.com/bangtutorial/aether-clash) by Bang Tutorial ([YouTube tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU)). The engine, combat and CPU are unchanged; each of the twelve kit slots is now played by a ghost whose legend fits that slot's moves.
+PERANG DEDEMIT is built on [Aether Clash](https://github.com/bangtutorial/aether-clash) by Bang Tutorial ([YouTube tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU)). The engine, combat and CPU come from Aether Clash; each of its twelve kit slots is played by a dedemit whose legend fits that slot's moves. The in-game **Kitab Dedemit** tells each dedemit's legend and lists its moves.
 
 > [!NOTE]
-> **Work in progress.** Eleven ghosts already have their own art: portraits, select art, cut-ins and placeholder puppet sprites built from one base image each (`guide/tools/build_ghost_assets.py`). Jiangshi, skill icons, effects, arena backgrounds and voices are still the original Aether Clash assets. Prompts for every ghost are in [guide/ghost-prompts.md](guide/ghost-prompts.md); which files to replace is in [guide/ghost-roster.md](guide/ghost-roster.md).
+> **Work in progress.** Fighters are placeholder puppet sprites built from one base image each (`guide/tools/build_ghost_assets.py`), not frame-by-frame animation yet. Voices are muted until new recordings exist.
 
 ## 👻 Roster
 
-| Ghost | Faction | Origin | Basic | Ultimate | Engine slot |
-| --- | --- | --- | --- | --- | --- |
-| **POCONG** — The Shroud Hopper | Nusantara | Jawa / Melayu | Kafan Chain | Hujan Pocong | `isolde` |
-| **KUNTILANAK** — The Waru Wailer | Nusantara | Kalimantan / Melayu | Kuku Panjang | Malam Pohon Waru | `arco` |
-| **GENDERUWO** — The Banyan Brute | Nusantara | Jawa | Tinju Rimba | Amuk Beringin | `haldor` |
-| **TUYUL** — The Little Pickpocket | Nusantara | Jawa | Gigit Kecil | Pesugihan Kilat | `nib` |
-| **KUYANG** — The Midnight Head | Nusantara | Kalimantan | Cakar Malam | Pesta Kuyang | `cora` |
-| **LEYAK** — The Night Flame | Nusantara | Bali | Cakar Bara | Malam Pengleakan (wujud celeng) | `fenr` |
-| **JIANGSHI** — The Talisman Hopper | Mancanegara | Tiongkok | Telapak Kaku | Jimat Terlepas | `edda` |
-| **KUCHISAKE-ONNA** — The Masked Question | Mancanegara | Jepang | Gunting Cepat | Buka Masker | `zanni` |
-| **LA LLORONA** — The Weeping River | Mancanegara | Meksiko | Selendang Ratapan | Banjir Ratapan | `naja` |
-| **BANSHEE** — The Keening Herald | Mancanegara | Irlandia | Tangan Kabut | Keening | `solan` |
-| **BLOODY MARY** — The Mirror Witch | Mancanegara | Inggris / AS | Pecahan Kaca | Cermin Seribu | `rhea` |
-| **DULLAHAN** — The Headless Rider | Mancanegara | Irlandia | Cambuk Rantai | Kereta Maut | `mira` |
+| Dedemit | Golongan | Origin | Signature move | Ultimate |
+| --- | --- | --- | --- | --- |
+| **Pocong** | Makhluk Halus | Jawa | Tali Pocong (binds the rival for 0.7 s) | Hujan Pocong |
+| **Kuntilanak** | Makhluk Halus | Kalimantan / Melayu | Tawa Melengking | Malam Pohon Waru |
+| **Sundel Bolong** | Makhluk Halus | Jawa | Balas Dendam (counter) | Dendam Kesumat |
+| **Wewe Gombel** | Makhluk Halus | Semarang | Gondol! (pulls the rival in) | Sarang Aren |
+| **Genderuwo** | Makhluk Halus | Jawa | Lempar Batu Gaib | Amuk Beringin |
+| **Eyang Sukmo Capo** | Makhluk Halus | Jawa | Gelombang Sukma | Sabda Keramat |
+| **Leyak** | Ilmu Hitam | Bali | Api Leyak | Malam Pengleakan (fire form) |
+| **Kuyang** | Ilmu Hitam | Kalimantan | Pita Arwah | Pesta Kuyang |
+| **Palasik** | Ilmu Hitam | Sumatra Barat | Isap Sari | Tiga Kepala |
+| **Tuyul** | Ilmu Hitam | Jawa | Copet Kilat | Pesugihan Kilat |
+| **Jenglot** | Ilmu Hitam | Jawa | Terkam Jenglot | Hujan Jenglot |
+| **Begu Ganjang** | Ilmu Hitam | Batak | Tangan Ganjang (longest reach) | Begu Menjulang |
 
-Arenas: **Rumah Kosong**, **Pabrik Gula Tua**, **Makam Kamboja**, **Hutan Larangan** and **Candi Purnama** (background art still to be generated, see [guide/ghost-stages.md](guide/ghost-stages.md)).
-
-Every ghost has a 3-hit basic chain, two skills and an ultimate with a full-screen cut-in. Modes: VS Computer (best of 3, four CPU levels) and Training.
+Arenas: **Rumah Kosong**, **Pabrik Gula Tua**, **Makam Kamboja**, **Hutan Larangan** and **Kawah Akar Geni**. Modes: VS Computer (best of 3, four CPU levels) and Training.
 
 ## 🎮 Controls
 
@@ -117,7 +115,8 @@ Step-by-step instructions for nginx, Apache/LiteSpeed and Caddy, plus a script t
 ├── announcer.js      # announcer voice queue
 ├── touch.js          # on-screen touch controls
 ├── fenr.js … edda.js # one kit file per engine slot (moves, balance, timings)
-├── ghosts.js         # GHOST CLASH roster: which ghost plays each slot, names, faction, skill names, cut-in text
+├── ghosts.js         # PERANG DEDEMIT roster: which dedemit plays each slot, names, golongan, moves, legends
+├── dedemit.css       # PERANG DEDEMIT theme: home screen, wordmark, Kitab Dedemit
 ├── preload.js        # first-visit loading screen, fills the cache
 ├── precache.js       # generated list of runtime files with sizes and hashes
 ├── sw.js             # service worker: cache-first images, network-first code
@@ -131,7 +130,7 @@ Step-by-step instructions for nginx, Apache/LiteSpeed and Caddy, plus a script t
     ├── audio/        # announcer clips and background music
     ├── menu/         # menu art, arena backgrounds, character select art
     ├── ui/           # shared HUD art (ARCO kit, drone, cut-in)
-    └── fonts/        # Rajdhani (SIL Open Font License)
+    └── fonts/        # Rajdhani (SIL Open Font License); IM Fell English (OFL)
 ```
 
 ## 📚 Guides
@@ -140,9 +139,9 @@ The [`guide/`](guide/) folder holds the design and production notes behind the g
 
 | Topic | Guide |
 | --- | --- |
-| **Ghost roster, slot mapping and asset swap** | [ghost-roster.md](guide/ghost-roster.md) |
-| **Image prompts for all 12 ghosts** | [ghost-prompts.md](guide/ghost-prompts.md) |
-| **Five haunted arenas and their background prompts** | [ghost-stages.md](guide/ghost-stages.md) |
+| **Dedemit roster, slot mapping, moves and asset builder** | [ghost-roster.md](guide/ghost-roster.md) |
+| **Image prompts** | [ghost-prompts.md](guide/ghost-prompts.md) |
+| **Five haunted arenas** | [ghost-stages.md](guide/ghost-stages.md) |
 | Adding a new fighter, step by step | [character-workflow.md](guide/character-workflow.md) |
 | Shared gameplay rules (movement, combos, HP, cooldowns) | [gameplay-standard.md](guide/gameplay-standard.md) |
 | Sprite prompts, pipeline, QA and known issues | [sprite-prompts.md](guide/sprite-prompts.md), [sprite-pipeline.md](guide/sprite-pipeline.md), [sprite-qa.md](guide/sprite-qa.md), [sprite-known-issues.md](guide/sprite-known-issues.md) |
@@ -164,9 +163,9 @@ The guides also mention the full production workspace (raw generation sources, p
 
 ## 🙏 Credits
 
-- **Ghost roster and GHOST CLASH adaptation**: [fsyahangga](https://github.com/fsyahangga)
+- **Dedemit roster and PERANG DEDEMIT adaptation**: [fsyahangga](https://github.com/fsyahangga)
 - **Original game, engine, code and current art/audio**: [Aether Clash](https://github.com/bangtutorial/aether-clash) by [Bang Tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU) — visuals generated with Higgsfield (GPT Image), voices and announcer with ElevenLabs via Higgsfield, background music "Midday Showdown" made with Suno
-- **Typography**: [Rajdhani](https://fonts.google.com/specimen/Rajdhani) by Indian Type Foundry, under the SIL Open Font License (see `assets/fonts/OFL.txt`)
+- **Typography**: [IM Fell English](https://fonts.google.com/specimen/IM+Fell+English) by Igino Marini and [Rajdhani](https://fonts.google.com/specimen/Rajdhani) by Indian Type Foundry, under the SIL Open Font License (see `assets/fonts/OFL.txt`)
 
 ## 📄 License
 

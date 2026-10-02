@@ -1,22 +1,22 @@
 {
-  "files": 278,
-  "bytes": 32866554,
+  "files": 280,
+  "bytes": 31932429,
   "list": [
     {
       "file": "index.html",
-      "bytes": 12800
+      "bytes": 12854
     },
     {
       "file": "mobile.html",
-      "bytes": 3707
+      "bytes": 3652
     },
     {
       "file": "style.css",
-      "bytes": 25732
+      "bytes": 25646
     },
     {
       "file": "menu.css",
-      "bytes": 28728
+      "bytes": 28652
     },
     {
       "file": "preload.js",
@@ -24,19 +24,35 @@
     },
     {
       "file": "ghosts.js",
-      "bytes": 8302
+      "bytes": 12340
+    },
+    {
+      "file": "dedemit.css",
+      "bytes": 6064
+    },
+    {
+      "file": "assets/menu/home-dedemit.webp",
+      "bytes": 361520
+    },
+    {
+      "file": "assets/fonts/im-fell-english-latin-400-normal.woff2",
+      "bytes": 59880
+    },
+    {
+      "file": "assets/fonts/im-fell-english-latin-400-italic.woff2",
+      "bytes": 57808
     },
     {
       "file": "game.js",
-      "bytes": 171314
+      "bytes": 170927
     },
     {
       "file": "menu.js",
-      "bytes": 24783
+      "bytes": 25033
     },
     {
       "file": "match.js",
-      "bytes": 4526
+      "bytes": 4348
     },
     {
       "file": "announcer.js",
@@ -72,7 +88,7 @@
     },
     {
       "file": "isolde.js",
-      "bytes": 2635
+      "bytes": 2715
     },
     {
       "file": "rhea.js",
@@ -92,7 +108,7 @@
     },
     {
       "file": "assets/ui/drone.png",
-      "bytes": 18724
+      "bytes": 13590
     },
     {
       "file": "assets/menu/locked.svg",
@@ -260,39 +276,39 @@
     },
     {
       "file": "assets/cora/ui/cutin.webp",
-      "bytes": 104336
+      "bytes": 99520
     },
     {
       "file": "assets/cora/ui/fx-feather.webp",
-      "bytes": 5044
+      "bytes": 13990
     },
     {
       "file": "assets/cora/ui/fx-gust.webp",
-      "bytes": 14152
+      "bytes": 42436
     },
     {
       "file": "assets/cora/ui/fx-raven.webp",
-      "bytes": 10750
+      "bytes": 61842
     },
     {
       "file": "assets/cora/ui/icon-basic.webp",
-      "bytes": 21044
+      "bytes": 19058
     },
     {
       "file": "assets/cora/ui/icon-skill1.webp",
-      "bytes": 17310
+      "bytes": 14898
     },
     {
       "file": "assets/cora/ui/icon-skill2.webp",
-      "bytes": 19240
+      "bytes": 19214
     },
     {
       "file": "assets/cora/ui/icon-ultimate.webp",
-      "bytes": 28518
+      "bytes": 19776
     },
     {
       "file": "assets/cora/ui/portrait.webp",
-      "bytes": 39490
+      "bytes": 33798
     },
     {
       "file": "assets/edda/audio/edda-ultimate.mp3",
@@ -308,55 +324,55 @@
     },
     {
       "file": "assets/edda/manifest.js",
-      "bytes": 12097
+      "bytes": 12167
     },
     {
       "file": "assets/edda/run/sprite-sheet-alpha.webp",
-      "bytes": 1595536
+      "bytes": 1314596
     },
     {
       "file": "assets/edda/ui/cutin.webp",
-      "bytes": 264670
+      "bytes": 99440
     },
     {
       "file": "assets/edda/ui/fx-ripple.webp",
-      "bytes": 6940
+      "bytes": 17406
     },
     {
       "file": "assets/edda/ui/fx-shell.webp",
-      "bytes": 17640
+      "bytes": 56708
     },
     {
       "file": "assets/edda/ui/fx-stomp.webp",
-      "bytes": 13468
+      "bytes": 27264
     },
     {
       "file": "assets/edda/ui/fx-stone.webp",
-      "bytes": 7698
+      "bytes": 11756
     },
     {
       "file": "assets/edda/ui/fx-tortoise.webp",
-      "bytes": 60852
+      "bytes": 201546
     },
     {
       "file": "assets/edda/ui/icon-basic.webp",
-      "bytes": 26148
+      "bytes": 16040
     },
     {
       "file": "assets/edda/ui/icon-skill1.webp",
-      "bytes": 20836
+      "bytes": 11654
     },
     {
       "file": "assets/edda/ui/icon-skill2.webp",
-      "bytes": 23314
+      "bytes": 16958
     },
     {
       "file": "assets/edda/ui/icon-ultimate.webp",
-      "bytes": 31242
+      "bytes": 17132
     },
     {
       "file": "assets/edda/ui/portrait.webp",
-      "bytes": 34176
+      "bytes": 24654
     },
     {
       "file": "assets/fenr/audio/fenr-ultimate-holden.mp3",
@@ -376,55 +392,55 @@
     },
     {
       "file": "assets/fenr/ui/fx-bite.webp",
-      "bytes": 8948
+      "bytes": 17162
     },
     {
       "file": "assets/fenr/ui/fx-claw.webp",
-      "bytes": 7178
+      "bytes": 12592
     },
     {
       "file": "assets/fenr/ui/fx-gale.webp",
-      "bytes": 4970
+      "bytes": 10040
     },
     {
       "file": "assets/fenr/ui/fx-howl.webp",
-      "bytes": 10784
+      "bytes": 22076
     },
     {
       "file": "assets/fenr/ui/fx-rush.webp",
-      "bytes": 10026
+      "bytes": 23594
     },
     {
       "file": "assets/fenr/ui/fx-transform.webp",
-      "bytes": 15202
+      "bytes": 35134
     },
     {
       "file": "assets/fenr/ui/icon-human-basic.webp",
-      "bytes": 11026
+      "bytes": 22482
     },
     {
       "file": "assets/fenr/ui/icon-human-skill1.webp",
-      "bytes": 6122
+      "bytes": 18524
     },
     {
       "file": "assets/fenr/ui/icon-human-skill2.webp",
-      "bytes": 9938
+      "bytes": 21980
     },
     {
       "file": "assets/fenr/ui/icon-ultimate.webp",
-      "bytes": 14998
+      "bytes": 22602
     },
     {
       "file": "assets/fenr/ui/icon-wolf-basic.webp",
-      "bytes": 15864
+      "bytes": 22172
     },
     {
       "file": "assets/fenr/ui/icon-wolf-skill1.webp",
-      "bytes": 10442
+      "bytes": 18494
     },
     {
       "file": "assets/fenr/ui/icon-wolf-skill2.webp",
-      "bytes": 8652
+      "bytes": 22042
     },
     {
       "file": "assets/fenr/ui/portrait-human.webp",
@@ -464,11 +480,11 @@
     },
     {
       "file": "assets/haldor/manifest.js",
-      "bytes": 11536
+      "bytes": 11552
     },
     {
       "file": "assets/haldor/run/sprite-sheet-alpha.webp",
-      "bytes": 1881392
+      "bytes": 2229690
     },
     {
       "file": "assets/haldor/ui/cutin.webp",
@@ -476,35 +492,35 @@
     },
     {
       "file": "assets/haldor/ui/fx-quake.webp",
-      "bytes": 12184
+      "bytes": 24832
     },
     {
       "file": "assets/haldor/ui/fx-slag.webp",
-      "bytes": 11300
+      "bytes": 37556
     },
     {
       "file": "assets/haldor/ui/fx-splash.webp",
-      "bytes": 9562
+      "bytes": 24058
     },
     {
       "file": "assets/haldor/ui/fx-steam.webp",
-      "bytes": 6432
+      "bytes": 22002
     },
     {
       "file": "assets/haldor/ui/icon-basic.webp",
-      "bytes": 28334
+      "bytes": 22622
     },
     {
       "file": "assets/haldor/ui/icon-skill1.webp",
-      "bytes": 16502
+      "bytes": 19556
     },
     {
       "file": "assets/haldor/ui/icon-skill2.webp",
-      "bytes": 23904
+      "bytes": 22248
     },
     {
       "file": "assets/haldor/ui/icon-ultimate.webp",
-      "bytes": 31006
+      "bytes": 23912
     },
     {
       "file": "assets/haldor/ui/portrait.webp",
@@ -532,43 +548,43 @@
     },
     {
       "file": "assets/isolde/ui/cutin.webp",
-      "bytes": 93386
+      "bytes": 86666
     },
     {
       "file": "assets/isolde/ui/fx-frost.webp",
-      "bytes": 8318
+      "bytes": 19314
     },
     {
       "file": "assets/isolde/ui/fx-piercer.webp",
-      "bytes": 6690
+      "bytes": 884
     },
     {
       "file": "assets/isolde/ui/fx-shatter.webp",
-      "bytes": 15232
+      "bytes": 25982
     },
     {
       "file": "assets/isolde/ui/fx-skyfall.webp",
-      "bytes": 7412
+      "bytes": 43294
     },
     {
       "file": "assets/isolde/ui/icon-basic.webp",
-      "bytes": 14166
+      "bytes": 21058
     },
     {
       "file": "assets/isolde/ui/icon-skill1.webp",
-      "bytes": 20634
+      "bytes": 18338
     },
     {
       "file": "assets/isolde/ui/icon-skill2.webp",
-      "bytes": 23448
+      "bytes": 20228
     },
     {
       "file": "assets/isolde/ui/icon-ultimate.webp",
-      "bytes": 26876
+      "bytes": 21872
     },
     {
       "file": "assets/isolde/ui/portrait.webp",
-      "bytes": 45226
+      "bytes": 39500
     },
     {
       "file": "assets/mecha/manifest.js",
@@ -584,7 +600,7 @@
     },
     {
       "file": "assets/menu/azure-harbor.webp",
-      "bytes": 116560
+      "bytes": 304276
     },
     {
       "file": "assets/menu/cora-select.webp",
@@ -592,11 +608,11 @@
     },
     {
       "file": "assets/menu/edda-select.webp",
-      "bytes": 98000
+      "bytes": 152426
     },
     {
       "file": "assets/menu/elderwood.webp",
-      "bytes": 130386
+      "bytes": 326500
     },
     {
       "file": "assets/menu/fenr-select.webp",
@@ -611,28 +627,20 @@
       "bytes": 188424
     },
     {
-      "file": "assets/menu/home-factions-loop.mp4",
-      "bytes": 1417101
-    },
-    {
-      "file": "assets/menu/home-factions.webp",
-      "bytes": 148524
-    },
-    {
       "file": "assets/menu/isolde-select.webp",
       "bytes": 134134
     },
     {
       "file": "assets/menu/mira-select.webp",
-      "bytes": 138308
+      "bytes": 150526
     },
     {
       "file": "assets/menu/moonrise.webp",
-      "bytes": 68134
+      "bytes": 332426
     },
     {
       "file": "assets/menu/naja-select.webp",
-      "bytes": 172524
+      "bytes": 134562
     },
     {
       "file": "assets/menu/nib-select.webp",
@@ -640,19 +648,19 @@
     },
     {
       "file": "assets/menu/rhea-select.webp",
-      "bytes": 165802
+      "bytes": 128234
     },
     {
       "file": "assets/menu/solan-select.webp",
-      "bytes": 164606
+      "bytes": 152324
     },
     {
       "file": "assets/menu/sunspire.webp",
-      "bytes": 49268
+      "bytes": 329778
     },
     {
       "file": "assets/menu/zanni-select.webp",
-      "bytes": 124218
+      "bytes": 180802
     },
     {
       "file": "assets/mira/audio/mira-ultimate-luna.mp3",
@@ -668,51 +676,51 @@
     },
     {
       "file": "assets/mira/manifest.js",
-      "bytes": 11968
+      "bytes": 11903
     },
     {
       "file": "assets/mira/run/sprite-sheet-alpha.webp",
-      "bytes": 1989990
+      "bytes": 719602
     },
     {
       "file": "assets/mira/ui/cutin.webp",
-      "bytes": 129920
+      "bytes": 100782
     },
     {
       "file": "assets/mira/ui/fx-burst.webp",
-      "bytes": 17352
+      "bytes": 52400
     },
     {
       "file": "assets/mira/ui/fx-crash.webp",
-      "bytes": 13328
+      "bytes": 34850
     },
     {
       "file": "assets/mira/ui/fx-rocket.webp",
-      "bytes": 6158
+      "bytes": 68388
     },
     {
       "file": "assets/mira/ui/fx-star.webp",
-      "bytes": 6094
+      "bytes": 11414
     },
     {
       "file": "assets/mira/ui/icon-basic.webp",
-      "bytes": 17856
+      "bytes": 22364
     },
     {
       "file": "assets/mira/ui/icon-skill1.webp",
-      "bytes": 15306
+      "bytes": 19520
     },
     {
       "file": "assets/mira/ui/icon-skill2.webp",
-      "bytes": 25404
+      "bytes": 22208
     },
     {
       "file": "assets/mira/ui/icon-ultimate.webp",
-      "bytes": 25152
+      "bytes": 22462
     },
     {
       "file": "assets/mira/ui/portrait.webp",
-      "bytes": 43702
+      "bytes": 41634
     },
     {
       "file": "assets/naja/audio/naja-ultimate-soraya.mp3",
@@ -728,51 +736,51 @@
     },
     {
       "file": "assets/naja/manifest.js",
-      "bytes": 11512
+      "bytes": 11501
     },
     {
       "file": "assets/naja/run/sprite-sheet-alpha.webp",
-      "bytes": 1717442
+      "bytes": 1417586
     },
     {
       "file": "assets/naja/ui/cutin.webp",
-      "bytes": 120316
+      "bytes": 71682
     },
     {
       "file": "assets/naja/ui/fx-cyclone.webp",
-      "bytes": 14950
+      "bytes": 34106
     },
     {
       "file": "assets/naja/ui/fx-ripple.webp",
-      "bytes": 8958
+      "bytes": 20660
     },
     {
       "file": "assets/naja/ui/fx-sandwave.webp",
-      "bytes": 9302
+      "bytes": 23934
     },
     {
       "file": "assets/naja/ui/fx-serpent.webp",
-      "bytes": 65082
+      "bytes": 128270
     },
     {
       "file": "assets/naja/ui/icon-basic.webp",
-      "bytes": 27428
+      "bytes": 16614
     },
     {
       "file": "assets/naja/ui/icon-skill1.webp",
-      "bytes": 24914
+      "bytes": 14112
     },
     {
       "file": "assets/naja/ui/icon-skill2.webp",
-      "bytes": 28412
+      "bytes": 16134
     },
     {
       "file": "assets/naja/ui/icon-ultimate.webp",
-      "bytes": 29388
+      "bytes": 17804
     },
     {
       "file": "assets/naja/ui/portrait.webp",
-      "bytes": 41194
+      "bytes": 26870
     },
     {
       "file": "assets/nib/audio/nib-ultimate.mp3",
@@ -796,43 +804,43 @@
     },
     {
       "file": "assets/nib/ui/cutin.webp",
-      "bytes": 93032
+      "bytes": 87060
     },
     {
       "file": "assets/nib/ui/fx-letter.webp",
-      "bytes": 4924
+      "bytes": 5638
     },
     {
       "file": "assets/nib/ui/fx-plane.webp",
-      "bytes": 4572
+      "bytes": 54786
     },
     {
       "file": "assets/nib/ui/fx-slip.webp",
-      "bytes": 22866
+      "bytes": 51452
     },
     {
       "file": "assets/nib/ui/fx-stamp.webp",
-      "bytes": 19112
+      "bytes": 55502
     },
     {
       "file": "assets/nib/ui/icon-basic.webp",
-      "bytes": 22936
+      "bytes": 13454
     },
     {
       "file": "assets/nib/ui/icon-skill1.webp",
-      "bytes": 12434
+      "bytes": 10216
     },
     {
       "file": "assets/nib/ui/icon-skill2.webp",
-      "bytes": 19034
+      "bytes": 13348
     },
     {
       "file": "assets/nib/ui/icon-ultimate.webp",
-      "bytes": 18786
+      "bytes": 13158
     },
     {
       "file": "assets/nib/ui/portrait.webp",
-      "bytes": 26798
+      "bytes": 21030
     },
     {
       "file": "assets/rhea/audio/rhea-ultimate.mp3",
@@ -848,51 +856,51 @@
     },
     {
       "file": "assets/rhea/manifest.js",
-      "bytes": 11763
+      "bytes": 11853
     },
     {
       "file": "assets/rhea/run/sprite-sheet-alpha.webp",
-      "bytes": 1502966
+      "bytes": 559076
     },
     {
       "file": "assets/rhea/ui/cutin.webp",
-      "bytes": 108036
+      "bytes": 114346
     },
     {
       "file": "assets/rhea/ui/fx-burst.webp",
-      "bytes": 19276
+      "bytes": 45692
     },
     {
       "file": "assets/rhea/ui/fx-drift.webp",
-      "bytes": 9482
+      "bytes": 73508
     },
     {
       "file": "assets/rhea/ui/fx-planet.webp",
-      "bytes": 17248
+      "bytes": 73508
     },
     {
       "file": "assets/rhea/ui/fx-well.webp",
-      "bytes": 21730
+      "bytes": 64236
     },
     {
       "file": "assets/rhea/ui/icon-basic.webp",
-      "bytes": 17416
+      "bytes": 24236
     },
     {
       "file": "assets/rhea/ui/icon-skill1.webp",
-      "bytes": 12188
+      "bytes": 22148
     },
     {
       "file": "assets/rhea/ui/icon-skill2.webp",
-      "bytes": 24152
+      "bytes": 22916
     },
     {
       "file": "assets/rhea/ui/icon-ultimate.webp",
-      "bytes": 26232
+      "bytes": 25158
     },
     {
       "file": "assets/rhea/ui/portrait.webp",
-      "bytes": 51448
+      "bytes": 50590
     },
     {
       "file": "assets/showcase/edda/portrait.webp",
@@ -948,51 +956,51 @@
     },
     {
       "file": "assets/solan/manifest.js",
-      "bytes": 11835
+      "bytes": 11824
     },
     {
       "file": "assets/solan/run/sprite-sheet-alpha.webp",
-      "bytes": 1619842
+      "bytes": 1264922
     },
     {
       "file": "assets/solan/ui/cutin.webp",
-      "bytes": 130508
+      "bytes": 108794
     },
     {
       "file": "assets/solan/ui/fx-crescent.webp",
-      "bytes": 10074
+      "bytes": 27426
     },
     {
       "file": "assets/solan/ui/fx-impact.webp",
-      "bytes": 12828
+      "bytes": 29266
     },
     {
       "file": "assets/solan/ui/fx-roar.webp",
-      "bytes": 16002
+      "bytes": 35518
     },
     {
       "file": "assets/solan/ui/fx-sunburst.webp",
-      "bytes": 17286
+      "bytes": 49220
     },
     {
       "file": "assets/solan/ui/icon-basic.webp",
-      "bytes": 21426
+      "bytes": 21782
     },
     {
       "file": "assets/solan/ui/icon-skill1.webp",
-      "bytes": 16616
+      "bytes": 17246
     },
     {
       "file": "assets/solan/ui/icon-skill2.webp",
-      "bytes": 24528
+      "bytes": 22782
     },
     {
       "file": "assets/solan/ui/icon-ultimate.webp",
-      "bytes": 26478
+      "bytes": 21152
     },
     {
       "file": "assets/solan/ui/portrait.webp",
-      "bytes": 45498
+      "bytes": 40754
     },
     {
       "file": "assets/stage-config.js",
@@ -1000,15 +1008,15 @@
     },
     {
       "file": "assets/stage.webp",
-      "bytes": 84514
+      "bytes": 274776
     },
     {
       "file": "assets/ui/arco-avatar.webp",
-      "bytes": 39034
+      "bytes": 33338
     },
     {
       "file": "assets/ui/attack.webp",
-      "bytes": 6744
+      "bytes": 11842
     },
     {
       "file": "assets/ui/drone-config.js",
@@ -1024,19 +1032,19 @@
     },
     {
       "file": "assets/ui/skill1.webp",
-      "bytes": 8908
+      "bytes": 10084
     },
     {
       "file": "assets/ui/skill2.webp",
-      "bytes": 9788
+      "bytes": 12174
     },
     {
       "file": "assets/ui/squadron-icon.webp",
-      "bytes": 6466
+      "bytes": 12958
     },
     {
       "file": "assets/ui/ultimate-cutin.webp",
-      "bytes": 88200
+      "bytes": 83376
     },
     {
       "file": "assets/ui/ultimate.webp",
@@ -1060,55 +1068,55 @@
     },
     {
       "file": "assets/zanni/manifest.js",
-      "bytes": 11653
+      "bytes": 11686
     },
     {
       "file": "assets/zanni/run/sprite-sheet-alpha.webp",
-      "bytes": 1010560
+      "bytes": 1892302
     },
     {
       "file": "assets/zanni/ui/cutin.webp",
-      "bytes": 86884
+      "bytes": 141130
     },
     {
       "file": "assets/zanni/ui/fx-bigring.webp",
-      "bytes": 24056
+      "bytes": 61072
     },
     {
       "file": "assets/zanni/ui/fx-confetti.webp",
-      "bytes": 16344
+      "bytes": 31406
     },
     {
       "file": "assets/zanni/ui/fx-ring.webp",
-      "bytes": 14902
+      "bytes": 35184
     },
     {
       "file": "assets/zanni/ui/fx-snatch.webp",
-      "bytes": 19366
+      "bytes": 50486
     },
     {
       "file": "assets/zanni/ui/icon-basic.webp",
-      "bytes": 25846
+      "bytes": 26366
     },
     {
       "file": "assets/zanni/ui/icon-skill1.webp",
-      "bytes": 17230
+      "bytes": 22600
     },
     {
       "file": "assets/zanni/ui/icon-skill2.webp",
-      "bytes": 19002
+      "bytes": 26036
     },
     {
       "file": "assets/zanni/ui/icon-ultimate.webp",
-      "bytes": 28306
+      "bytes": 23466
     },
     {
       "file": "assets/zanni/ui/portrait.webp",
-      "bytes": 34208
+      "bytes": 51614
     },
     {
       "file": "precache.js",
-      "bytes": 15543
+      "bytes": 15695
     },
     {
       "file": "sw.js",

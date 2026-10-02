@@ -1,4 +1,6 @@
-# Prompt gambar hantu GHOST CLASH
+# Prompt gambar dedemit
+
+> Catatan: konsep sekarang 12 dedemit Nusantara (lihat [ghost-roster.md](ghost-roster.md)). Gambar base semua dedemit sudah dibuat dan ada di `assets/ghosts/base/`. Prompt di bawah tetap berguna untuk portrait, cut-in, dan strip animasi; prompt hantu mancanegara (nomor 7–12) disimpan sebagai arsip.
 
 Prompt base, portrait, dan cut-in untuk 12 hantu. Pemetaan slot dan daftar file ada di [ghost-roster.md](ghost-roster.md); template strip animasi dan aturan ukuran ada di [sprite-prompts.md](sprite-prompts.md).
 

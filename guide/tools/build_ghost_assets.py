@@ -1,14 +1,16 @@
-"""Build GHOST CLASH placeholder assets from one base image per ghost.
+"""Build PERANG DEDEMIT placeholder assets from one base image per dedemit.
 
-From assets/ghosts/base/<ghost>.(webp|png) (full body, facing RIGHT, flat magenta or green background) this writes,
-for the ghost's engine slot:
+From assets/ghosts/base/<dedemit>.(webp|png) (full body, facing RIGHT, flat magenta or green background) this writes,
+for the dedemit's engine slot:
   - a puppet sprite atlas with the slot's exact layout (same cells, rows and anchor), where each state is the base
     pose squashed, leaned, shifted or rotated (idle breath, walk bob, lunge, hurt recoil, fall ...);
   - the slot's metrics bounds/heights recomputed from those frames (emitters and playback stay as tuned);
-  - HUD portrait (384x384), character-select art and the ultimate cut-in (1600x686).
+  - HUD portrait (384x384), character-select art and the ultimate cut-in (1600x686);
+  - four skill icons and the slot's effect sprites (recoloured in the dedemit's colour, or replaced by the dedemit
+    itself, a kepeng coin, a rope or a spirit orb).
 It is a stand-in until real animation strips go through the sprite pipeline (guide/character-workflow.md).
 
-Run from the project root:  python guide/tools/build_ghost_assets.py [ghost ...]
+Run from the project root:  python guide/tools/build_ghost_assets.py [dedemit ...]
 Needs Python 3 with Pillow and numpy (pip install pillow numpy) and Node.js on PATH (to read/write manifest.js).
 Afterwards run:  node guide/tools/update_precache.mjs
 """
@@ -20,34 +22,52 @@ from PIL import Image, ImageDraw, ImageFilter
 ROOT = Path.cwd()
 BASE_DIR = ROOT / 'assets/ghosts/base'
 
-# slot = engine kit slot; atlas/manifest = files to rewrite; portrait = [cx, cy, size] in base pixels (1254 px images);
-# color = glow colour for portrait and cut-in.
+# slot = engine kit slot; portrait = [cx, cy, size] in base pixels (1254 px images); color = glow colour;
+# scale = height relative to the slot's old fighter; lift = px the figure floats above the ground (heads);
+# fx = effect file -> 'recolor' | 'self' | 'self-rot' (dedemit turned to fly head-first) | 'orb' | 'coin' | 'rope'.
 GHOSTS = {
-    'pocong':     dict(slot='isolde', key='magenta', portrait=[760, 440, 430], color=(120, 200, 210)),
-    'kuntilanak': dict(slot='arco',   key='magenta', portrait=[800, 410, 460], color=(150, 170, 200)),
-    'genderuwo':  dict(slot='haldor', key='green',   portrait=[920, 400, 440], color=(230, 120, 40)),
-    'tuyul':      dict(slot='nib',    key='magenta', portrait=[770, 420, 460], color=(230, 190, 70)),
-    'kuyang':     dict(slot='cora',   key='green',   portrait=[860, 400, 440], color=(220, 40, 60)),
-    'leyak':      dict(slot='fenr',   key='green',   portrait=[890, 540, 460], color=(250, 140, 40)),
-    'kuchisake':  dict(slot='zanni',  key='magenta', portrait=[760, 400, 400], color=(200, 170, 120)),
-    'llorona':    dict(slot='naja',   key='magenta', portrait=[850, 430, 440], color=(120, 190, 230)),
-    'banshee':    dict(slot='solan',  key='magenta', portrait=[860, 400, 440], color=(150, 200, 240)),
-    'bloodymary': dict(slot='rhea',   key='green',   portrait=[780, 370, 420], color=(200, 30, 50)),
-    'dullahan':   dict(slot='mira',   key='magenta', portrait=[940, 620, 400], color=(90, 150, 255)),
-    'jiangshi':   dict(slot='edda',   key='magenta', portrait=[640, 400, 440], color=(240, 210, 80)),
+    'pocong':        dict(slot='isolde', key='magenta', portrait=[760, 440, 430], color=(150, 215, 220),
+                          fx={'piercer': 'rope', 'skyfall': 'self-rot', 'shatter': 'recolor', 'frost': 'recolor'}),
+    'kuntilanak':    dict(slot='arco',   key='magenta', portrait=[800, 410, 460], color=(170, 185, 215), fx={'drone': 'self'}),
+    'sundelbolong':  dict(slot='edda',   key='magenta', portrait=[870, 330, 380], color=(90, 210, 215),
+                          fx={'stone': 'orb', 'ripple': 'recolor', 'shell': 'recolor', 'stomp': 'recolor', 'tortoise': 'self'}),
+    'wewegombel':    dict(slot='zanni',  key='green',   portrait=[840, 400, 440], color=(190, 160, 110),
+                          fx={'ring': 'recolor', 'bigring': 'recolor', 'snatch': 'recolor', 'confetti': 'recolor'}),
+    'genderuwo':     dict(slot='haldor', key='green',   portrait=[920, 400, 440], color=(230, 120, 40), scale=1.1,
+                          fx={'slag': 'recolor', 'splash': 'recolor', 'steam': 'recolor', 'quake': 'recolor'}),
+    'eyangsukmocapo': dict(slot='solan', key='magenta', portrait=[740, 420, 440], color=(225, 195, 120),
+                          fx={'crescent': 'recolor', 'roar': 'recolor', 'impact': 'recolor', 'sunburst': 'recolor'}),
+    'leyak':         dict(slot='fenr',   key='green',   portrait=[890, 540, 460], color=(250, 140, 40),
+                          fx={'claw': 'recolor', 'gale': 'recolor', 'rush': 'recolor', 'bite': 'recolor', 'howl': 'recolor', 'transform': 'recolor'}),
+    'kuyang':        dict(slot='cora',   key='green',   portrait=[860, 400, 440], color=(225, 50, 70),
+                          fx={'feather': 'recolor', 'gust': 'recolor', 'raven': 'self'}),
+    'palasik':       dict(slot='rhea',   key='green',   portrait=[780, 560, 560], color=(230, 70, 50), scale=.55, lift=70,
+                          fx={'drift': 'self', 'planet': 'self', 'well': 'recolor', 'burst': 'recolor'}),
+    'tuyul':         dict(slot='nib',    key='magenta', portrait=[770, 420, 460], color=(235, 195, 80),
+                          fx={'letter': 'coin', 'plane': 'self', 'slip': 'recolor', 'stamp': 'recolor'}),
+    'jenglot':       dict(slot='mira',   key='green',   portrait=[830, 470, 440], color=(200, 60, 50), scale=.62,
+                          fx={'star': 'orb', 'rocket': 'self-rot', 'burst': 'recolor', 'crash': 'recolor'}),
+    'beguganjang':   dict(slot='naja',   key='magenta', portrait=[790, 180, 330], color=(140, 160, 180), scale=1.32,
+                          fx={'sandwave': 'recolor', 'cyclone': 'recolor', 'ripple': 'recolor', 'serpent': 'self'}),
 }
 SLOT_FILES = {
     'arco':  dict(atlas=['assets/mecha/run/sprite-sheet-alpha.webp'], manifest=['assets/mecha/manifest.js'], prefix=['MECHA'],
-                  portrait=['assets/ui/arco-avatar.webp'], select='assets/menu/arco-select.webp', cutin='assets/ui/ultimate-cutin.webp'),
+                  portrait=['assets/ui/arco-avatar.webp'], select='assets/menu/arco-select.webp', cutin='assets/ui/ultimate-cutin.webp',
+                  icons=[['assets/ui/attack.webp', 'assets/ui/skill1.webp', 'assets/ui/skill2.webp', 'assets/ui/squadron-icon.webp']],
+                  fx={'drone': 'assets/ui/drone.png'}),
     'fenr':  dict(atlas=['assets/fenr/human/run/sprite-sheet-alpha.webp', 'assets/fenr/wolf/run/sprite-sheet-alpha.webp'],
                   manifest=['assets/fenr/human/manifest.js', 'assets/fenr/wolf/manifest.js'], prefix=['FENR_HUMAN', 'FENR_WOLF'],
                   portrait=['assets/fenr/ui/portrait-human.webp', 'assets/fenr/ui/portrait-wolf.webp'],
-                  select='assets/menu/fenr-select.webp', cutin='assets/fenr/ui/cutin.webp'),
+                  select='assets/menu/fenr-select.webp', cutin='assets/fenr/ui/cutin.webp',
+                  icons=[[f'assets/fenr/ui/icon-human-{s}.webp' for s in ('basic', 'skill1', 'skill2')] + ['assets/fenr/ui/icon-ultimate.webp'],
+                         [f'assets/fenr/ui/icon-wolf-{s}.webp' for s in ('basic', 'skill1', 'skill2')] + [None]]),
 }
 def slot_files(slot):
-    if slot in SLOT_FILES: return SLOT_FILES[slot]
-    return dict(atlas=[f'assets/{slot}/run/sprite-sheet-alpha.webp'], manifest=[f'assets/{slot}/manifest.js'], prefix=[slot.upper()],
-                portrait=[f'assets/{slot}/ui/portrait.webp'], select=f'assets/menu/{slot}-select.webp', cutin=f'assets/{slot}/ui/cutin.webp')
+    d = dict(atlas=[f'assets/{slot}/run/sprite-sheet-alpha.webp'], manifest=[f'assets/{slot}/manifest.js'], prefix=[slot.upper()],
+             portrait=[f'assets/{slot}/ui/portrait.webp'], select=f'assets/menu/{slot}-select.webp', cutin=f'assets/{slot}/ui/cutin.webp',
+             icons=[[f'assets/{slot}/ui/icon-{s}.webp' for s in ('basic', 'skill1', 'skill2', 'ultimate')]])
+    d.update(SLOT_FILES.get(slot, {}))
+    return d
 
 # ---------------------------------------------------------------- cutout
 def cutout(path, key):
@@ -141,7 +161,7 @@ def read_manifest(path):
 def write_manifest(path, data):
     path.write_text(''.join(f'window.{k} = {json.dumps(v, separators=(", ", ": "))};\n' for k, v in data.items()), encoding='utf-8')
 
-def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None):
+def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None, lift=0):
     data = read_manifest(manifest_path)
     man, met = data[prefix + '_MANIFEST'], data[prefix + '_METRICS']
     lay = man['frame_layout']; cw, ch = lay['cellWidth'], lay['cellHeight']
@@ -156,7 +176,8 @@ def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None):
         n = len(rects)
         frames_out = []
         for i, rc in enumerate(rects):
-            cell, bb = render_frame(f, fx, pose(state, i, n), rc['w'], rc['h'], ax, ay, tint)
+            P = pose(state, i, n); P['dy'] -= lift
+            cell, bb = render_frame(f, fx, P, rc['w'], rc['h'], ax, ay, tint)
             sheet.alpha_composite(cell, (rc['x'], rc['y']))
             if bb: frames_out.append({'frame': i, 'bounds': {'left': bb[0] - ax, 'right': bb[2] - ax, 'top': bb[1] - ay, 'bottom': bb[3] - ay}, 'height': ay - bb[1]})
         if state in met.get('states', {}): met['states'][state]['frames'] = frames_out
@@ -200,6 +221,115 @@ def cutin(fig, color, out, W=1600, H=686):
     bg.convert('RGB').save(out, 'WEBP', quality=90)
 
 # ---------------------------------------------------------------- main
+# ---------------------------------------------------------------- icons
+def icon(full, fig, box, color, kind, out, size=256):
+    """Skill icon: the dedemit's face on a dark glow, with a glyph for the move type (claw, shot, swirl, burst)."""
+    cx, cy, s0 = box
+    zoom = {'basic': 1.0, 'skill1': .85, 'skill2': 1.15, 'ultimate': .75}[kind]
+    s1 = int(s0 * zoom)
+    face = full.crop((cx - s1 // 2, cy - s1 // 2, cx + s1 // 2, cy + s1 // 2)).resize((size, size), Image.LANCZOS)
+    bg = glow_bg((size, size), color, dark=(8, 10, 18)).convert('RGBA')
+    if kind == 'ultimate':
+        rays = Image.new('RGBA', (size, size)); d = ImageDraw.Draw(rays)
+        for k in range(16):
+            a = k * math.pi / 8
+            d.polygon([(size / 2, size / 2), (size / 2 + math.cos(a - .09) * size, size / 2 + math.sin(a - .09) * size),
+                       (size / 2 + math.cos(a + .09) * size, size / 2 + math.sin(a + .09) * size)], fill=(*color, 70))
+        bg.alpha_composite(rays)
+    bg.alpha_composite(face)
+    shade = Image.new('RGBA', (size, size), (0, 0, 0, 0)); d = ImageDraw.Draw(shade)
+    d.rectangle((0, int(size * .55), size, size), fill=(0, 0, 0, 0))
+    bg.alpha_composite(Image.composite(Image.new('RGBA', (size, size), (6, 6, 12, 150)), shade, Image.linear_gradient('L').resize((size, size))))
+    g = Image.new('RGBA', (size, size)); d = ImageDraw.Draw(g)
+    def stroke(pts, w):
+        d.line(pts, fill=(20, 12, 10, 255), width=w + 8, joint='curve'); d.line(pts, fill=(*color, 255), width=w + 2, joint='curve')
+        d.line(pts, fill=(255, 250, 235, 255), width=max(2, w - 6), joint='curve')
+    if kind == 'basic':
+        for k in range(3): stroke([(size * (.42 + k * .14), size * .56), (size * (.30 + k * .14), size * .94)], 14)
+    elif kind == 'skill1':
+        stroke([(size * .12, size * .80), (size * .80, size * .80)], 16)
+        d.polygon([(size * .80, size * .68), (size * .96, size * .80), (size * .80, size * .92)], fill=(255, 250, 235, 255), outline=(20, 12, 10, 255))
+    elif kind == 'skill2':
+        pts = [(size * (.5 + math.cos(t) * (.10 + t * .045)), size * (.76 + math.sin(t) * (.06 + t * .03))) for t in np.linspace(0, 4.4 * math.pi / 2, 40)]
+        stroke(pts, 12)
+    else:
+        d.ellipse((size * .05, size * .05, size * .95, size * .95), outline=(*color, 255), width=10)
+        d.ellipse((size * .05, size * .05, size * .95, size * .95), outline=(255, 240, 200, 255), width=3)
+    bg.alpha_composite(g)
+    frame = ImageDraw.Draw(bg); frame.rectangle((0, 0, size - 1, size - 1), outline=(*color, 255), width=4)
+    bg.convert('RGB').save(out, 'WEBP', quality=92)
+
+# ---------------------------------------------------------------- effects
+def recolor(path, color, out=None):
+    im = Image.open(path).convert('RGBA'); a = np.asarray(im).astype(np.float32)
+    lum = (a[..., 0] * .3 + a[..., 1] * .59 + a[..., 2] * .11) / 255
+    c = np.array(color, np.float32); dark = c * .2
+    lo = np.clip(lum / .55, 0, 1)[..., None]; hi = np.clip((lum - .55) / .45, 0, 1)[..., None]
+    rgb = np.where(lum[..., None] < .55, dark + (c - dark) * lo, c + (255 - c) * hi)
+    a[..., :3] = rgb
+    Image.fromarray(a.clip(0, 255).astype(np.uint8), 'RGBA').save(out or path, 'WEBP' if str(out or path).endswith('webp') else 'PNG', lossless=True)
+
+def fit_on(canvas_size, sprite, pad=.06, bottom=False):
+    W, H = canvas_size; sp = sprite.copy(); sp.thumbnail((int(W * (1 - 2 * pad)), int(H * (1 - 2 * pad))), Image.LANCZOS)
+    c = Image.new('RGBA', (W, H)); x = (W - sp.width) // 2; y = H - sp.height if bottom else (H - sp.height) // 2
+    c.alpha_composite(sp, (x, y)); return c
+
+def ghostly(sprite, color, alpha=.85):
+    """Spirit look for summoned copies: tinted towards the dedemit's colour with a soft outer glow."""
+    a = np.asarray(sprite).astype(np.float32); c = np.array(color, np.float32)
+    a[..., :3] = a[..., :3] * .7 + c * .3; a[..., 3] *= alpha
+    sp = Image.fromarray(a.clip(0, 255).astype(np.uint8), 'RGBA')
+    glow = Image.new('RGBA', sp.size, (*color, 0)); m = sp.split()[3].filter(ImageFilter.GaussianBlur(max(2, sp.width // 40)))
+    glow.putalpha(m.point(lambda v: int(v * .7)))
+    out = Image.new('RGBA', sp.size); out.alpha_composite(glow); out.alpha_composite(sp); return out
+
+def orb(size, color):
+    W, H = size; im = Image.new('RGBA', (W, H)); d = ImageDraw.Draw(im)
+    for k in range(14):                                    # tail to the left (the sprite flies to the right)
+        t = k / 13; r = W * (.22 - .15 * t); x = W * (.62 - .5 * t)
+        d.ellipse((x - r, H / 2 - r, x + r, H / 2 + r), fill=(*color, int(150 * (1 - t))))
+    im = im.filter(ImageFilter.GaussianBlur(W / 40)); d = ImageDraw.Draw(im)
+    d.ellipse((W * .5, H * .4, W * .74, H * .6), fill=(255, 250, 240, 255)); return im
+
+def coin(size, color):
+    """Uang kepeng: a round bronze-gold coin with a square hole."""
+    W, H = size; r = W * .3; cx, cy = W * .58, H / 2
+    trail = Image.new('RGBA', (W, H)); t = ImageDraw.Draw(trail)
+    t.polygon([(cx, cy - r * .7), (W * .04, cy - r * .15), (W * .04, cy + r * .15), (cx, cy + r * .7)], fill=(*color, 110))
+    im = trail.filter(ImageFilter.GaussianBlur(W / 30)); d = ImageDraw.Draw(im)
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(150, 105, 30, 255), outline=(50, 30, 10, 255), width=6)
+    d.ellipse((cx - r * .8, cy - r * .8, cx + r * .8, cy + r * .8), outline=(250, 215, 110, 255), width=5)
+    h = r * .28; d.rectangle((cx - h, cy - h, cx + h, cy + h), fill=(0, 0, 0, 0), outline=(50, 30, 10, 255), width=5)
+    return im
+
+def rope(size, color):
+    """Tali pocong: a knotted shroud rope with a loop at the front."""
+    W, H = size; im = Image.new('RGBA', (W, H)); d = ImageDraw.Draw(im)
+    for w, c in ((22, (40, 32, 20, 255)), (14, (*color, 255)), (5, (255, 252, 240, 255))):
+        d.line([(W * .06, H * .52), (W * .3, H * .45), (W * .5, H * .55), (W * .66, H * .5)], fill=c, width=w, joint='curve')
+        d.ellipse((W * .62, H * .3, W * .94, H * .7), outline=c, width=w)
+    d.ellipse((W * .56, H * .43, W * .7, H * .59), fill=(*color, 255), outline=(40, 32, 20, 255), width=4)
+    return im
+
+def build_fx(fig, cfg, sf):
+    color = cfg['color']; slot = cfg['slot']
+    for name, kind in cfg.get('fx', {}).items():
+        path = ROOT / sf.get('fx', {}).get(name, f'assets/{slot}/ui/fx-{name}.webp')
+        if not path.exists(): continue
+        size = Image.open(path).size
+        if kind == 'recolor':
+            # Recolour from a pristine copy so running the script again gives the same result.
+            src = ROOT / 'assets/ghosts/fx-src' / path.relative_to(ROOT)
+            if not src.exists(): src.parent.mkdir(parents=True, exist_ok=True); src.write_bytes(path.read_bytes())
+            recolor(src, color, path); continue
+        if kind == 'self': im = fit_on(size, ghostly(fig, color), bottom=size[0] >= 512)
+        elif kind == 'self-rot': im = fit_on(size, ghostly(fig.rotate(-90, expand=True), color))
+        elif kind == 'orb': im = orb(size, color)
+        elif kind == 'coin': im = coin(size, color)
+        elif kind == 'rope': im = rope(size, color)
+        im.save(path, 'PNG' if path.suffix == '.png' else 'WEBP', lossless=True)
+
+# ---------------------------------------------------------------- main
 def base_path(name):
     for ext in ('webp', 'png'):
         p = BASE_DIR / f'{name}.{ext}'
@@ -211,17 +341,24 @@ def build(name):
     sf = slot_files(cfg['slot'])
     raw = Image.open(p).convert('RGBA')
     fig = cutout(p, cfg['key'])
-    # Portrait crops come from the cut-out figure placed back on the original canvas size.
+    # Portrait and icon crops come from the cut-out figure placed back on the original canvas.
     full = Image.new('RGBA', raw.size); bb = cutout_box(p, cfg['key']); full.alpha_composite(fig, bb[:2])
     for i, (atlas, manifest, prefix) in enumerate(zip(sf['atlas'], sf['manifest'], sf['prefix'])):
         data = read_manifest(ROOT / manifest)
-        height = data[prefix + '_METRICS']['states']['idle']['frames'][0]['height']
-        tint = (255, 110, 30) if (cfg['slot'] == 'fenr' and i == 1) else None   # Leyak's beast form glows like embers
-        build_atlas(fig, ROOT / atlas, ROOT / manifest, prefix, height, tint)
+        lay = data[prefix + '_MANIFEST']['frame_layout']
+        height = round(data[prefix + '_METRICS']['states']['idle']['frames'][0]['height'] * cfg.get('scale', 1))
+        height = min(height, lay['cellHeight'] - 16 - cfg.get('lift', 0))
+        tint = (255, 110, 30) if (cfg['slot'] == 'fenr' and i == 1) else None   # Leyak's fire form glows like embers
+        build_atlas(fig, ROOT / atlas, ROOT / manifest, prefix, height, tint, cfg.get('lift', 0))
     for i, out in enumerate(sf['portrait']):
         portrait(full, cfg['portrait'], (255, 110, 30) if i else cfg['color'], ROOT / out)
     select_art(fig, ROOT / sf['select'])
     cutin(fig, cfg['color'], ROOT / sf['cutin'])
+    for set_i, paths in enumerate(sf['icons']):
+        col = (255, 110, 30) if set_i else cfg['color']
+        for kind, out in zip(('basic', 'skill1', 'skill2', 'ultimate'), paths):
+            if out: icon(full, fig, cfg['portrait'], col, kind, ROOT / out, size=Image.open(ROOT / out).size[0])
+    build_fx(fig, cfg, sf)
     print(f'{name}: slot {cfg["slot"]} updated')
 
 def cutout_box(p, key):

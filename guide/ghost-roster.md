@@ -1,103 +1,53 @@
-# Roster GHOST CLASH
+# Roster PERANG DEDEMIT
 
-GHOST CLASH memakai engine Aether Clash apa adanya. Dua belas slot kit lama (`arco`, `fenr`, `mira`, …) tetap menjadi ID internal, dan setiap slot sekarang dimainkan oleh satu hantu yang legendanya paling cocok dengan gerakan slot itu. Semua nama, faksi, judul, nama skill, teks cut-in, dan status HUD berasal dari [ghosts.js](../ghosts.js). Damage, jangkauan, cooldown, dan CPU tidak diubah, jadi balance hasil benchmark lama tetap berlaku.
+PERANG DEDEMIT memakai engine Aether Clash. Dua belas slot kit lama (`arco`, `fenr`, `mira`, …) tetap menjadi ID internal, dan setiap slot dimainkan oleh satu dedemit Nusantara yang legendanya paling cocok dengan gerakan slot itu. Nama, golongan, julukan, nama jurus, teks cut-in, status HUD, dan teks legenda di Kitab Dedemit semuanya ada di [ghosts.js](../ghosts.js). Damage, jangkauan, cooldown, dan CPU tidak diubah; satu-satunya mekanik baru adalah tali Pocong yang mengikat lawan.
 
-Prompt gambar untuk setiap hantu ada di [ghost-prompts.md](ghost-prompts.md), dan lima arena hantu ada di [ghost-stages.md](ghost-stages.md). Aturan pipeline sprite tetap mengikuti [character-workflow.md](character-workflow.md), [sprite-prompts.md](sprite-prompts.md), dan [sprite-qa.md](sprite-qa.md).
+Arena ada di [ghost-stages.md](ghost-stages.md). Prompt gambar lama ada di [ghost-prompts.md](ghost-prompts.md).
 
-## Pemetaan slot
+## Dua golongan
 
-Urutan tabel sama dengan urutan grid pilih karakter: enam Nusantara di atas, enam Mancanegara di bawah.
+- **Makhluk Halus**: arwah penasaran dan penunggu tempat angker.
+- **Ilmu Hitam**: manusia penganut ilmu hitam yang melepas kepalanya di malam hari, dan makhluk peliharaan yang dikirim untuk mencuri atau mencelakai.
 
-| Hantu | Faksi | Asal | Slot engine | Alasan pemetaan |
-| --- | --- | --- | --- | --- |
-| POCONG — The Shroud Hopper | Nusantara | Jawa / Melayu | `isolde` | Serbuan lurus jadi lompatan; ultimate tiga tombak dari langit jadi tiga pocong jatuh |
-| KUNTILANAK — The Waru Wailer | Nusantara | Kalimantan / Melayu | `arco` | Proyektil jadi tawa melengking; summon dari udara jadi arwah pohon waru |
-| GENDERUWO — The Banyan Brute | Nusantara | Jawa | `haldor` | Lemparan melambung = lempar batu; tiga hantaman tanah = amuk beringin |
-| TUYUL — The Little Pickpocket | Nusantara | Jawa | `nib` | Rantai tercepat dan dash yang menyelinap ke belakang lawan = copet kilat |
-| KUYANG — The Midnight Head | Nusantara | Kalimantan | `cora` | Tiga sapuan kawanan gagak jadi kawanan kepala terbang |
-| LEYAK — The Night Flame | Nusantara | Bali | `fenr` | Transformasi serigala jadi wujud celeng (babi hutan) |
-| JIANGSHI — The Talisman Hopper | Mancanegara | Tiongkok | `edda` | Counter guard jadi perisai jimat; roh kura-kura yang menghentak jadi jiangshi raksasa yang melompat |
-| KUCHISAKE-ONNA — The Masked Question | Mancanegara | Jepang | `zanni` | Lengan gunting, cincin bumerang, dan tarikan dekat |
-| LA LLORONA — The Weeping River | Mancanegara | Meksiko | `naja` | Cambuk panjang = selendang; gelombang tanah dan ular pasir jadi arus sungai |
-| BANSHEE — The Keening Herald | Mancanegara | Irlandia | `solan` | Gelombang bulan sabit dan tiga auman jadi ratapan |
-| BLOODY MARY — The Mirror Witch | Mancanegara | Inggris / AS | `rhea` | Planet melayang dan tiga planet mengorbit jadi cermin |
-| DULLAHAN — The Headless Rider | Mancanegara | Irlandia | `mira` | Petarung berat dengan tembakan lurus, tackle, dan hujan proyektil |
+## Pemetaan slot dan jurus
 
-## Kit yang berjalan di game
+Urutan tabel sama dengan urutan grid pilih karakter dan Kitab Dedemit.
 
-Ini perilaku nyata di game sekarang, diturunkan dari slot engine. Angka damage/cooldown: basic 6/8/12, Skill 1 16 dmg CD 3 s, Skill 2 24 dmg CD 6 s, ultimate sesuai slot (lihat `<slot>-reference.md`).
+| Dedemit | Golongan | Slot | Spasi | I | O | P (ultimate) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Pocong | Makhluk Halus | `isolde` | Sundulan Kafan: tiga sundulan berjangkauan panjang | Tali Pocong: tali dilempar naik, lawan terikat diam 0,7 s | Lompat Pocong: lompatan menerjang | Hujan Pocong: tiga pocong jatuh dari langit |
+| Kuntilanak | Makhluk Halus | `arco` | Cakar Kuku | Tawa Melengking: gelombang tawa lurus | Jatuh dari Waru: hantaman area | Malam Pohon Waru: arwah menyambar dari udara |
+| Sundel Bolong | Makhluk Halus | `edda` | Cakar Dendam | Arwah Memantul: bola arwah memantul dua kali | Balas Dendam: bertahan 0,55 s, serangan pertama dibalas | Dendam Kesumat: arwah raksasa menghentak tiga kali |
+| Wewe Gombel | Makhluk Halus | `zanni` | Tangan Panjang | Selendang Melayang: terbang lalu kembali | Gondol!: lawan diseret mendekat | Sarang Aren: tiga pusaran selendang |
+| Genderuwo | Makhluk Halus | `haldor` | Tinju Rimba: rantai paling berat | Lempar Batu Gaib: batu melambung | Seruduk Rimba | Amuk Beringin: tiga hantaman tanah |
+| Eyang Sukmo Capo | Makhluk Halus | `solan` | Tongkat Pusaka | Gelombang Sukma: tenaga dalam setinggi dada | Hentak Bumi: lompat lalu menghentak | Sabda Keramat: tiga gelombang |
+| Leyak | Ilmu Hitam | `fenr` | Cakar Bara | Api Leyak: bola api | Terjang Malam | Malam Pengleakan: wujud api 12 s (Cakar Geni, Terkam Geni, Pekik Malam) |
+| Kuyang | Ilmu Hitam | `cora` | Cakar Malam | Pita Arwah: kipas tiga proyektil | Kibas Rambut | Pesta Kuyang: kawanan kepala terbang |
+| Palasik | Ilmu Hitam | `rhea` | Gigit Melayang | Kepala Mengambang: proyektil lambat | Isap Sari: pusaran isap 230 px di depan | Tiga Kepala: tiga kepala mengorbit |
+| Tuyul | Ilmu Hitam | `nib` | Gigit Kecil: rantai tercepat | Lempar Koin: koin kepeng tercepat | Copet Kilat: dash, menyelinap ke belakang lawan | Pesugihan Kilat: tiga karung koin pengejar |
+| Jenglot | Ilmu Hitam | `mira` | Cakar Jenglot | Kuku Terbang | Terkam Jenglot: terkaman | Hujan Jenglot: dua belas jenglot berjatuhan |
+| Begu Ganjang | Ilmu Hitam | `naja` | Tangan Ganjang: jangkauan terpanjang | Bayang Merayap: gelombang di tanah | Putaran Ganjang: depan dan belakang | Begu Menjulang: bayangan mengejar, menjulang tiga kali |
 
-| Hantu | Space (basic) | I (Skill 1) | O (Skill 2) | P (Ultimate) |
-| --- | --- | --- | --- | --- |
-| POCONG | KAFAN CHAIN: tiga tusukan jarak panjang | TALI KAFAN: proyektil naik, anti-air | LOMPAT POCONG: serbuan cepat 560 px/s | HUJAN POCONG: tiga hantaman dari langit |
-| KUNTILANAK | KUKU PANJANG | TAWA MELENGKING: proyektil lurus | JATUH DARI WARU: hantaman ke tanah | MALAM POHON WARU: summon dari udara |
-| GENDERUWO | TINJU RIMBA: rantai paling berat | LEMPAR BATU GAIB: batu melambung ke posisi lawan | SERUDUK RIMBA: serudukan bahu | AMUK BERINGIN: tiga hantaman di depan |
-| TUYUL | GIGIT KECIL: rantai tercepat | LEMPAR KOIN: lemparan datar tercepat | COPET KILAT: dash, bila kena menyelinap ke belakang lawan | PESUGIHAN KILAT: tiga proyektil pengejar |
-| KUYANG | CAKAR MALAM | PITA ARWAH: kipas tiga proyektil | SAPUAN MALAM: sapuan angin | PESTA KUYANG: tiga lintasan kawanan |
-| LEYAK | CAKAR BARA | API LEYAK: proyektil | TERJANG MALAM: lunge | MALAM PENGLEAKAN: wujud celeng 12 s (TARING CELENG / TERKAM CELENG / LOLONG MALAM) |
-| JIANGSHI | TELAPAK KAKU | JIMAT MELOMPAT: memantul dua kali di tanah | PERISAI JIMAT: guard 0.55 s, hit pertama dibalas | JIMAT TERLEPAS: tiga hentakan berjalan |
-| KUCHISAKE-ONNA | GUNTING CEPAT | GUNTING BUMERANG: pergi lalu pulang | WATASHI, KIREI?: tarik lawan mendekat | BUKA MASKER: tiga gunting raksasa bumerang |
-| LA LLORONA | SELENDANG RATAPAN: jangkauan terjauh | AIR MATA SUNGAI: gelombang di tanah | PUSARAN SUNGAI: putaran depan-belakang | BANJIR RATAPAN: arus mengejar lalu tiga semburan |
-| BANSHEE | TANGAN KABUT | RATAPAN: gelombang setinggi dada | TERKAM KABUT: lompat lalu hantam lantai | KEENING: tiga gelombang ratapan |
-| BLOODY MARY | PECAHAN KACA | CERMIN MELAYANG: proyektil lambat 3.2 s | PANGGIL TIGA KALI: pusaran 230 px di depan | CERMIN SERIBU: tiga objek mengorbit |
-| DULLAHAN | CAMBUK RANTAI | TATAPAN KEPALA: proyektil lurus | TERJANG KSATRIA: tackle | KERETA MAUT: 12 proyektil jatuh |
+Angka umum: basic 6/8/12, Skill 1 16 dmg CD 3 s, Skill 2 24 dmg CD 6 s; ultimate sesuai `<slot>-reference.md`.
 
-Skill khas dari dokumen konsep yang belum ada di engine (teleport Kuntilanak, hisap HP Kuyang, curi bar ultimate Tuyul, klon Bloody Mary, tanda Dullahan, ikat Pocong) butuh kode baru di `game.js` dan kit file slotnya. Kerjakan satu per satu setelah sprite hantunya jadi.
+## Tali Pocong (mekanik baru)
 
-## Mengganti aset sebuah slot
-
-Cara paling aman: timpa file slot dengan nama yang sama, ukuran yang sama, dan format yang sama. Kode tidak perlu diubah.
-
-| Jenis | File yang ditimpa | Catatan |
-| --- | --- | --- |
-| Sprite atlas | `assets/<slot>/run/sprite-sheet-alpha.webp` + `assets/<slot>/manifest.js` | Hasil pipeline lengkap (14 state / 50 frame). ARCO: `assets/mecha/`. FENR: `assets/fenr/human/` dan `assets/fenr/wolf/` |
-| Portrait HUD | `assets/<slot>/ui/portrait.webp` (384×384) | ARCO: `assets/ui/arco-avatar.webp`. FENR: `portrait-human.webp` dan `portrait-wolf.webp` |
-| Cut-in ultimate | `assets/<slot>/ui/cutin.webp` (1600×686) | ARCO: `assets/ui/ultimate-cutin.webp` |
-| Ikon skill | `assets/<slot>/ui/icon-basic/skill1/skill2/ultimate.webp` (256×256) | ARCO: `assets/ui/attack, skill1, skill2, squadron-icon.webp`. FENR: `icon-human-*`, `icon-wolf-*`, `icon-ultimate` |
-| Art pilih karakter | `assets/menu/<slot>-select.webp` | Ukur dari file lama |
-| VFX | `assets/<slot>/ui/fx-*.webp` (PNG alpha 256) | Daftar per slot di bawah |
-| Suara | `assets/audio/announcer/select_<slot>.mp3`, `<slot>_wins.mp3`, voice ultimate di `assets/<slot>/audio/` | Lalu set `voice: true` untuk hantu itu di ghosts.js |
-
-VFX per slot dan penggantinya:
-
-| Hantu (slot) | File fx lama → isi baru |
-| --- | --- |
-| POCONG (`isolde`) | piercer → simpul tali kafan · skyfall → pocong jatuh · shatter → debu kafan · frost → jejak kain |
-| KUNTILANAK (`arco`) | `assets/ui/drone.png` → kepala kuntilanak melayang |
-| GENDERUWO (`haldor`) | slag → batu gaib · splash → pecahan kerikil · steam → debu rimba · quake → akar beringin pecah |
-| TUYUL (`nib`) | letter → koin emas · plane → karung koin terbang · slip → kilatan copet · stamp → cap koin |
-| KUYANG (`cora`) | feather → pita arwah merah · gust → sapuan rambut · raven → kepala kuyang terbang |
-| LEYAK (`fenr`) | claw → cakar bara · gale → bola api leyak · rush → jejak api · bite → taring celeng · howl → gelombang api · transform → kobaran berubah wujud |
-| JIANGSHI (`edda`) | stone → jimat kuning · ripple → riak qi · shell → kubah jimat · tortoise → jiangshi raksasa · stomp → hentakan tanah |
-| KUCHISAKE-ONNA (`zanni`) | ring → gunting berputar · bigring → gunting raksasa · snatch → kilatan tarikan · confetti → kelopak sakura |
-| LA LLORONA (`naja`) | sandwave → gelombang air · cyclone → pusaran air · serpent → tangan sungai · ripple → riak air |
-| BANSHEE (`solan`) | crescent → gelombang suara · roar → ratapan besar · impact → hantaman kabut · sunburst → cincin bulan pucat |
-| BLOODY MARY (`rhea`) | drift → cermin kecil · planet → cermin raksasa · well → pusaran kaca · burst → pecahan kaca |
-| DULLAHAN (`mira`) | star → sinar mata biru · rocket → api arwah jatuh · burst → ledakan api biru · crash → hantaman ksatria |
-
-Setelah mengganti atau menambah file apa pun, jalankan dari root proyek:
-
-    node guide/tools/update_precache.mjs
-
-Skrip itu menulis ulang `precache.js` dan `files.json`, jadi loading screen mengunduh versi baru dan service worker tidak menyajikan gambar lama.
-
-## Menambah atau mengubah teks hantu
-
-Edit entri slotnya di [ghosts.js](../ghosts.js): `name`, `tag`, `title`, `faction`, `detail`, `style`, `color`, `names` (Space, I, O, P), `status`, `cutin`. Leyak punya blok `beast` untuk wujud celeng. Tidak ada tempat lain yang perlu diubah.
+Proyektil yang punya properti `bind` (detik) mengikat targetnya: pemain mendapat tambahan `hurtTime`, CPU ditahan oleh `bindTime`, keduanya berhenti bergeser, dan tiga lilitan tali digambar mengikuti target. Nilainya `piercer.bind` di [isolde.js](../isolde.js) (0,7 s); kodenya `bindHit` di game.js. Jurus lain bisa memakai mekanik yang sama dengan menambahkan `bind` pada proyektilnya.
 
 ## Gambar base dan aset sementara
 
-Gambar base tiap hantu (satu pose penuh, hadap kanan, latar magenta atau hijau polos) disimpan di `assets/ghosts/base/<hantu>.webp`. Dari gambar itu [build_ghost_assets.py](tools/build_ghost_assets.py) membuat untuk slotnya:
+Gambar base tiap dedemit (satu pose penuh, hadap kanan, latar magenta atau hijau polos) ada di `assets/ghosts/base/<dedemit>.webp`. Gambar hantu mancanegara yang tidak dipakai lagi disimpan di `assets/ghosts/base/_arsip/`. Dari gambar base, [build_ghost_assets.py](tools/build_ghost_assets.py) membuat untuk slotnya:
 
-- atlas sprite dengan tata letak yang sama persis dengan slot lama; setiap state adalah pose base yang ditekan, dicondongkan, digeser, atau diputar (napas idle, ayunan jalan, terjangan, mundur saat kena, jatuh);
-- metrics bounds/tinggi dihitung ulang dari frame baru; emitter dan playback tetap;
-- portrait HUD, art pilih karakter, dan cut-in ultimate.
+- atlas sprite dengan tata letak slot lama; setiap state adalah pose base yang ditekan, dicondongkan, digeser, atau diputar;
+- metrics bounds/tinggi dari frame baru (emitter dan playback tetap);
+- portrait HUD, art pilih karakter, cut-in ultimate, dan empat ikon jurus;
+- efek: bentuk generik diwarnai ulang dengan warna dedemit (dari salinan asli di `assets/ghosts/fx-src`), objek khas diganti dengan sosok dedemit itu sendiri, koin kepeng, tali pocong, atau bola arwah.
 
-Ini aset sementara sampai strip animasi asli dibuat lewat pipeline sprite. Ikon skill dan VFX belum diganti. Jiangshi belum punya base, jadi slot `edda` masih memakai aset lama.
+Ukuran tiap dedemit diatur dengan `scale` (Jenglot kecil, Begu Ganjang menjulang) dan `lift` (Palasik melayang) di tabel `GHOSTS` dalam skrip itu; crop portrait dengan `portrait=[cx, cy, ukuran]`.
 
-Menambah atau mengganti satu hantu (butuh Python dengan Pillow dan numpy, serta Node.js):
+Membangun ulang satu dedemit (butuh Python dengan Pillow dan numpy, serta Node.js):
 
-    python guide/tools/build_ghost_assets.py jiangshi
+    python guide/tools/build_ghost_assets.py pocong
     node guide/tools/update_precache.mjs
 
-Crop portrait diatur di tabel `GHOSTS` dalam skrip itu (`portrait=[cx, cy, ukuran]` dalam piksel gambar base 1254 px).
+Yang masih bawaan Aether Clash: suara (announcer dan voice ultimate dimatikan untuk semua dedemit sampai ada rekaman baru; set `voice: true` di ghosts.js setelah file suaranya ditimpa).

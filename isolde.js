@@ -12,7 +12,8 @@
   // Sky Piercer: an ice bolt fired from the raised lance on a rising line (`rise` = vertical/horizontal speed ratio),
   // leaving at chest height (`y` px above the feet). It still catches a grounded rival within about 240 px and a
   // jumping rival much farther away: an anti-air poke.
-  const piercer = { speed:900, rise:.25, y:105 };
+  // bind: PERANG DEDEMIT's Tali Pocong ties the target in place for this many seconds (game.js bindHit).
+  const piercer = { speed:900, rise:.25, y:105, bind:.7 };
   // Skyfall Lances: three giant ice lances dive from the sky 0.38 s apart (inside the 0.42 s hurt stun). Each one is
   // aimed at the rival's feet when it is called and takes `flight` s to land, with a small shatter where it lands.
   // A standing rival takes all three (48); keep moving to make them land behind you.
