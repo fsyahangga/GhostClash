@@ -141,6 +141,7 @@ The [`guide/`](guide/) folder holds the design and production notes behind the g
 | --- | --- |
 | **Dedemit roster, slot mapping, moves and asset builder** | [ghost-roster.md](guide/ghost-roster.md) |
 | **Image prompts** | [ghost-prompts.md](guide/ghost-prompts.md) |
+| **Animation strip prompts (4 poses per move)** | [ghost-animation-prompts.md](guide/ghost-animation-prompts.md) |
 | **Five haunted arenas** | [ghost-stages.md](guide/ghost-stages.md) |
 | Adding a new fighter, step by step | [character-workflow.md](guide/character-workflow.md) |
 | Shared gameplay rules (movement, combos, HP, cooldowns) | [gameplay-standard.md](guide/gameplay-standard.md) |

@@ -11,6 +11,7 @@ Dokumentasi ini menyimpan keputusan final dan cara menyiapkan karakter berikutny
 | --- | --- |
 | **PERANG DEDEMIT: roster 12 dedemit, jurus, slot engine, dan builder aset** | [ghost-roster.md](ghost-roster.md) |
 | **Prompt base, portrait, cut-in, ikon, dan VFX setiap hantu** | [ghost-prompts.md](ghost-prompts.md) |
+| **Prompt animasi: sprite strip 4 pose per gerakan untuk 12 dedemit** | [ghost-animation-prompts.md](ghost-animation-prompts.md) |
 | **Lima arena dedemit: gambar, groundY, cara mengganti** | [ghost-stages.md](ghost-stages.md) |
 | Branding asli AETHER CLASH (engine dasar), dunia Mecha vs Demi-Human | [branding.md](branding.md) |
 | Framing kepala dan arah avatar pemain/musuh, termasuk transformasi | [avatar-standard.md](avatar-standard.md) |

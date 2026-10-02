@@ -161,7 +161,74 @@ def read_manifest(path):
 def write_manifest(path, data):
     path.write_text(''.join(f'window.{k} = {json.dumps(v, separators=(", ", ": "))};\n' for k, v in data.items()), encoding='utf-8')
 
-def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None, lift=0):
+# ---------------------------------------------------------------- animation strips (real frames)
+# Drop a strip at assets/ghosts/strips/<dedemit>/<state>.png|webp: one row of poses on the same flat chroma as the base
+# (see guide/ghost-animation-prompts.md). States without a strip keep the puppet frames. Leyak's fire form reads
+# assets/ghosts/strips/leyak-api/. Optional scale.json in the folder overrides STRIP_FIT per state.
+STRIP_DIR = ROOT / 'assets/ghosts/strips'
+STRIP_SOURCES = {   # engine row -> strip files to try, in order; a trailing '<' plays that strip backwards
+    'idle': ['idle'], 'walk': ['walk'], 'run': ['run', 'walk'], 'crouch': ['crouch'], 'jump': ['jump'], 'doublejump': ['doublejump'],
+    'attack1': ['attack1', 'attack'], 'attack2': ['attack2', 'attack'], 'attack3': ['attack3', 'attack'],
+    'skill1': ['skill1'], 'skill2': ['skill2'], 'ultimate': ['ultimate'], 'hurt': ['hurt'], 'down': ['down'], 'recover': ['recover', 'down<'],
+}
+# The tallest pose of a strip is scaled to this share of the fighter's standing height.
+STRIP_FIT = {'idle': 1.0, 'walk': 1.0, 'run': .98, 'crouch': .82, 'jump': 1.0, 'doublejump': .78, 'attack1': 1.04, 'attack2': 1.04, 'attack3': 1.06,
+             'skill1': 1.04, 'skill2': 1.04, 'ultimate': 1.08, 'hurt': .98, 'down': .9, 'recover': .95}
+
+def split_poses(img, n):
+    """Cut a cut-out strip into n poses at the widest empty column gaps (equal slices if the gaps are missing)."""
+    a = np.asarray(img)[..., 3] > 40; cols = a.any(0); w = len(cols)
+    gaps, x = [], 0
+    while x < w:
+        if not cols[x]:
+            s0 = x
+            while x < w and not cols[x]: x += 1
+            if s0 > 0 and x < w: gaps.append((x - s0, (s0 + x) // 2))
+        else: x += 1
+    cuts = sorted(c for _, c in sorted(gaps, reverse=True)[:n - 1]) if len(gaps) >= n - 1 else [round(w * k / n) for k in range(1, n)]
+    edges = [0, *cuts, w]; poses = []
+    for l, r in zip(edges, edges[1:]):
+        piece = img.crop((l, 0, r, img.height)); bb = piece.getbbox()
+        if bb: poses.append((piece.crop(bb), bb[3]))   # the pose and its lowest row in the strip
+    return poses
+
+def strip_frames(ghost, key, state, count, height, folder=None):
+    """Poses for one engine row from the dedemit's strips, scaled to its standing height, or None."""
+    d = STRIP_DIR / (folder or ghost)
+    if not d.exists(): return None
+    fit = dict(STRIP_FIT)
+    if (d / 'scale.json').exists(): fit.update(json.loads((d / 'scale.json').read_text()))
+    for src in STRIP_SOURCES.get(state, [state]):
+        name, rev = src.rstrip('<'), src.endswith('<')
+        path = next((d / f'{name}.{e}' for e in ('png', 'webp') if (d / f'{name}.{e}').exists()), None)
+        if not path: continue
+        want = 1 if state in ('jump', 'doublejump') else 4
+        poses = split_poses(cutout(path, key), want)
+        if not poses: continue
+        if rev: poses = poses[::-1]
+        tall = max(p.height for p, _ in poses); k = height * fit.get(state, 1.0) / tall
+        ground = max(b for _, b in poses)              # the lowest pose stands on the ground line
+        out = []
+        for p, b in poses:                             # a pose drawn higher in the strip (a hop, a rise) keeps its height
+            rise = (ground - b) * k
+            out.append((p.resize((max(1, round(p.width * k)), max(1, round(p.height * k))), Image.LANCZOS), 0 if rise < height * .03 else round(rise)))
+        return [out[min(len(out) - 1, round(i * (len(out) - 1) / max(1, count - 1)))] if len(out) != count else out[i] for i in range(count)]
+    return None
+
+def place_pose(pose_img, cell_w, cell_h, ax, ay, lift=0, tint=None):
+    """A real pose in a cell: feet on the ground line (raised by lift and by the pose's own rise in the strip),
+    feet centre on the anchor, kept inside the cell."""
+    p, rise = pose_img if isinstance(pose_img, tuple) else (pose_img, 0)
+    if p.width > cell_w - 12: p = p.resize((cell_w - 12, round(p.height * (cell_w - 12) / p.width)), Image.LANCZOS)
+    if p.height > ay - 4 - lift: p = p.resize((round(p.width * (ay - 4 - lift) / p.height), ay - 4 - lift), Image.LANCZOS)
+    lift += max(0, min(rise, ay - 4 - lift - p.height))
+    if tint is not None:
+        arr = np.asarray(p).astype(np.float32); arr[..., :3] = arr[..., :3] * .72 + np.array(tint, np.float32) * .28
+        p = Image.fromarray(arr.clip(0, 255).astype(np.uint8), 'RGBA')
+    x = round(ax - feet_x(p)); x = min(max(6, x), cell_w - 6 - p.width); y = ay - lift - p.height
+    cell = Image.new('RGBA', (cell_w, cell_h)); cell.alpha_composite(p, (x, y)); return cell, cell.getbbox()
+
+def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None, lift=0, ghost=None, key=None, strip_folder=None):
     data = read_manifest(manifest_path)
     man, met = data[prefix + '_MANIFEST'], data[prefix + '_METRICS']
     lay = man['frame_layout']; cw, ch = lay['cellWidth'], lay['cellHeight']
@@ -172,17 +239,23 @@ def build_atlas(fig, atlas_path, manifest_path, prefix, height, tint=None, lift=
     if f.width > max_w: f = f.resize((max_w, round(f.height * max_w / f.width)), Image.LANCZOS)
     fx = feet_x(f)
     sheet = Image.new('RGBA', (lay['sheetWidth'], lay['sheetHeight']))
+    used = []
     for state, rects in lay['rows'].items():
         n = len(rects)
         frames_out = []
+        real = strip_frames(ghost, key, state, n, f.height, strip_folder) if ghost else None
+        if real: used.append(state)
         for i, rc in enumerate(rects):
-            P = pose(state, i, n); P['dy'] -= lift
-            cell, bb = render_frame(f, fx, P, rc['w'], rc['h'], ax, ay, tint)
+            if real: cell, bb = place_pose(real[i], rc['w'], rc['h'], ax, ay, lift, tint if (not strip_folder or strip_folder == ghost) else None)
+            else:
+                P = pose(state, i, n); P['dy'] -= lift
+                cell, bb = render_frame(f, fx, P, rc['w'], rc['h'], ax, ay, tint)
             sheet.alpha_composite(cell, (rc['x'], rc['y']))
             if bb: frames_out.append({'frame': i, 'bounds': {'left': bb[0] - ax, 'right': bb[2] - ax, 'top': bb[1] - ay, 'bottom': bb[3] - ay}, 'height': ay - bb[1]})
         if state in met.get('states', {}): met['states'][state]['frames'] = frames_out
     sheet.save(atlas_path, 'WEBP', lossless=True, method=6)
-    man['base_image'] = 'assets/ghosts/base (puppet placeholder, guide/tools/build_ghost_assets.py)'
+    man['base_image'] = 'assets/ghosts/base + strips (' + (', '.join(used) or 'puppet only') + '), guide/tools/build_ghost_assets.py'
+    if used: print(f'   strips used for {atlas_path.parent.parent.name}: {", ".join(used)}')
     write_manifest(manifest_path, data)
 
 # ---------------------------------------------------------------- UI art
@@ -349,7 +422,9 @@ def build(name):
         height = round(data[prefix + '_METRICS']['states']['idle']['frames'][0]['height'] * cfg.get('scale', 1))
         height = min(height, lay['cellHeight'] - 16 - cfg.get('lift', 0))
         tint = (255, 110, 30) if (cfg['slot'] == 'fenr' and i == 1) else None   # Leyak's fire form glows like embers
-        build_atlas(fig, ROOT / atlas, ROOT / manifest, prefix, height, tint, cfg.get('lift', 0))
+        folder = (name + '-api') if (cfg['slot'] == 'fenr' and i == 1) else None
+        if folder and not (STRIP_DIR / folder).exists(): folder = name      # fire form falls back to the human strips, tinted
+        build_atlas(fig, ROOT / atlas, ROOT / manifest, prefix, height, tint, cfg.get('lift', 0), name, cfg['key'], folder)
     for i, out in enumerate(sf['portrait']):
         portrait(full, cfg['portrait'], (255, 110, 30) if i else cfg['color'], ROOT / out)
     select_art(fig, ROOT / sf['select'])

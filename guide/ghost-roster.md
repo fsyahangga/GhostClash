@@ -2,7 +2,7 @@
 
 PERANG DEDEMIT memakai engine Aether Clash. Dua belas slot kit lama (`arco`, `fenr`, `mira`, …) tetap menjadi ID internal, dan setiap slot dimainkan oleh satu dedemit Nusantara yang legendanya paling cocok dengan gerakan slot itu. Nama, golongan, julukan, nama jurus, teks cut-in, status HUD, dan teks legenda di Kitab Dedemit semuanya ada di [ghosts.js](../ghosts.js). Damage, jangkauan, cooldown, dan CPU tidak diubah; satu-satunya mekanik baru adalah tali Pocong yang mengikat lawan.
 
-Arena ada di [ghost-stages.md](ghost-stages.md). Prompt gambar lama ada di [ghost-prompts.md](ghost-prompts.md).
+Arena ada di [ghost-stages.md](ghost-stages.md). Prompt animasi (sprite strip per gerakan) ada di [ghost-animation-prompts.md](ghost-animation-prompts.md). Prompt gambar lama ada di [ghost-prompts.md](ghost-prompts.md).
 
 ## Dua golongan
 
@@ -42,6 +42,8 @@ Gambar base tiap dedemit (satu pose penuh, hadap kanan, latar magenta atau hijau
 - metrics bounds/tinggi dari frame baru (emitter dan playback tetap);
 - portrait HUD, art pilih karakter, cut-in ultimate, dan empat ikon jurus;
 - efek: bentuk generik diwarnai ulang dengan warna dedemit (dari salinan asli di `assets/ghosts/fx-src`), objek khas diganti dengan sosok dedemit itu sendiri, koin kepeng, tali pocong, atau bola arwah.
+
+Kalau ada sprite strip di `assets/ghosts/strips/<dedemit>/` (misalnya `idle.png`, `attack.png`, `ultimate.png`, masing-masing 4 pose), builder memakai pose sungguhan itu untuk gerakan tersebut, bukan pose boneka. Prompt dan daftar file ada di [ghost-animation-prompts.md](ghost-animation-prompts.md).
 
 Ukuran tiap dedemit diatur dengan `scale` (Jenglot kecil, Begu Ganjang menjulang) dan `lift` (Palasik melayang) di tabel `GHOSTS` dalam skrip itu; crop portrait dengan `portrait=[cx, cy, ukuran]`.
 
