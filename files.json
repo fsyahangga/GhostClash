@@ -1,10 +1,10 @@
 {
   "files": 280,
-  "bytes": 31932429,
+  "bytes": 31388085,
   "list": [
     {
       "file": "index.html",
-      "bytes": 12854
+      "bytes": 12871
     },
     {
       "file": "mobile.html",
@@ -20,11 +20,11 @@
     },
     {
       "file": "preload.js",
-      "bytes": 4166
+      "bytes": 4372
     },
     {
       "file": "ghosts.js",
-      "bytes": 12340
+      "bytes": 12470
     },
     {
       "file": "dedemit.css",
@@ -43,8 +43,12 @@
       "bytes": 57808
     },
     {
+      "file": "assets/audio/music/malam-dedemit.mp3",
+      "bytes": 815587
+    },
+    {
       "file": "game.js",
-      "bytes": 170927
+      "bytes": 170987
     },
     {
       "file": "menu.js",
@@ -248,15 +252,11 @@
     },
     {
       "file": "assets/audio/arco-ultimate-dylan.mp3",
-      "bytes": 36824
-    },
-    {
-      "file": "assets/audio/music/midday-showdown.mp3",
-      "bytes": 1571832
+      "bytes": 44347
     },
     {
       "file": "assets/cora/audio/cora-ultimate-anika.mp3",
-      "bytes": 28882
+      "bytes": 37660
     },
     {
       "file": "assets/cora/audio/cora_wins.mp3",
@@ -312,7 +312,7 @@
     },
     {
       "file": "assets/edda/audio/edda-ultimate.mp3",
-      "bytes": 23030
+      "bytes": 48945
     },
     {
       "file": "assets/edda/audio/edda_wins.mp3",
@@ -376,7 +376,7 @@
     },
     {
       "file": "assets/fenr/audio/fenr-ultimate-holden.mp3",
-      "bytes": 23031
+      "bytes": 39750
     },
     {
       "file": "assets/fenr/human/manifest.js",
@@ -468,7 +468,7 @@
     },
     {
       "file": "assets/haldor/audio/haldor-ultimate.mp3",
-      "bytes": 20106
+      "bytes": 35152
     },
     {
       "file": "assets/haldor/audio/haldor_wins.mp3",
@@ -528,7 +528,7 @@
     },
     {
       "file": "assets/isolde/audio/isolde-ultimate.mp3",
-      "bytes": 30972
+      "bytes": 36406
     },
     {
       "file": "assets/isolde/audio/isolde_wins.mp3",
@@ -664,7 +664,7 @@
     },
     {
       "file": "assets/mira/audio/mira-ultimate-luna.mp3",
-      "bytes": 23448
+      "bytes": 35988
     },
     {
       "file": "assets/mira/audio/mira_wins.mp3",
@@ -724,7 +724,7 @@
     },
     {
       "file": "assets/naja/audio/naja-ultimate-soraya.mp3",
-      "bytes": 21359
+      "bytes": 55214
     },
     {
       "file": "assets/naja/audio/naja_wins.mp3",
@@ -784,7 +784,7 @@
     },
     {
       "file": "assets/nib/audio/nib-ultimate.mp3",
-      "bytes": 20523
+      "bytes": 29301
     },
     {
       "file": "assets/nib/audio/nib_wins.mp3",
@@ -844,7 +844,7 @@
     },
     {
       "file": "assets/rhea/audio/rhea-ultimate.mp3",
-      "bytes": 21359
+      "bytes": 45183
     },
     {
       "file": "assets/rhea/audio/rhea_wins.mp3",
@@ -944,7 +944,7 @@
     },
     {
       "file": "assets/solan/audio/solan-ultimate.mp3",
-      "bytes": 21359
+      "bytes": 53960
     },
     {
       "file": "assets/solan/audio/solan_wins-raw.mp3",
@@ -1056,7 +1056,7 @@
     },
     {
       "file": "assets/zanni/audio/zanni-ultimate.mp3",
-      "bytes": 17598
+      "bytes": 37660
     },
     {
       "file": "assets/zanni/audio/zanni_wins-raw.mp3",
@@ -1116,11 +1116,11 @@
     },
     {
       "file": "precache.js",
-      "bytes": 15695
+      "bytes": 15692
     },
     {
       "file": "sw.js",
-      "bytes": 1358
+      "bytes": 1774
     }
   ]
 }

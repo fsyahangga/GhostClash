@@ -5,9 +5,9 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import vm from 'node:vm';
 
-const EXTRA = ['ghosts.js', 'dedemit.css', 'assets/menu/home-dedemit.webp', 'assets/fonts/im-fell-english-latin-400-normal.woff2', 'assets/fonts/im-fell-english-latin-400-italic.woff2'];
-// Files the game no longer loads (old Aether Clash home video and poster).
-const DROP = ['assets/menu/home-factions-loop.mp4', 'assets/menu/home-factions.webp'];
+const EXTRA = ['ghosts.js', 'dedemit.css', 'assets/menu/home-dedemit.webp', 'assets/fonts/im-fell-english-latin-400-normal.woff2', 'assets/fonts/im-fell-english-latin-400-italic.woff2', 'assets/audio/music/malam-dedemit.mp3'];
+// Files the game no longer loads (old Aether Clash home video, poster and music).
+const DROP = ['assets/menu/home-factions-loop.mp4', 'assets/menu/home-factions.webp', 'assets/audio/music/midday-showdown.mp3'];
 const sandbox = { self: {} };
 vm.runInNewContext(readFileSync('precache.js', 'utf8'), sandbox);
 const old = sandbox.self.AETHER_PRECACHE;

@@ -19,7 +19,7 @@ Makhluk Halus versus Ilmu Hitam: Pocong, Kuntilanak, Genderuwo, Tuyul, Leyak, Ku
 PERANG DEDEMIT is built on [Aether Clash](https://github.com/bangtutorial/aether-clash) by Bang Tutorial ([YouTube tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU)). The engine, combat and CPU come from Aether Clash; each of its twelve kit slots is played by a dedemit whose legend fits that slot's moves. The in-game **Kitab Dedemit** tells each dedemit's legend and lists its moves.
 
 > [!NOTE]
-> **Work in progress.** Fighters are placeholder puppet sprites built from one base image each (`guide/tools/build_ghost_assets.py`), not frame-by-frame animation yet. Voices are muted until new recordings exist.
+> **Work in progress.** Fighters are placeholder puppet sprites built from one base image each (`guide/tools/build_ghost_assets.py`), not frame-by-frame animation yet. Music (a pelog gamelan loop) and each dedemit's ultimate sound are synthesised by `guide/tools/build_dedemit_audio.py`; the announcer is still the original English voice.
 
 ## 👻 Roster
 
@@ -164,7 +164,7 @@ The guides also mention the full production workspace (raw generation sources, p
 ## 🙏 Credits
 
 - **Dedemit roster and PERANG DEDEMIT adaptation**: [fsyahangga](https://github.com/fsyahangga)
-- **Original game, engine, code and current art/audio**: [Aether Clash](https://github.com/bangtutorial/aether-clash) by [Bang Tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU) — visuals generated with Higgsfield (GPT Image), voices and announcer with ElevenLabs via Higgsfield, background music "Midday Showdown" made with Suno
+- **Original game, engine, code and current art/audio**: [Aether Clash](https://github.com/bangtutorial/aether-clash) by [Bang Tutorial](https://www.youtube.com/watch?v=UN_0bNC2wTU) — visuals generated with Higgsfield (GPT Image), voices and announcer with ElevenLabs via Higgsfield, original background music "Midday Showdown" made with Suno (replaced here by the synthesised "Malam Dedemit")
 - **Typography**: [IM Fell English](https://fonts.google.com/specimen/IM+Fell+English) by Igino Marini and [Rajdhani](https://fonts.google.com/specimen/Rajdhani) by Indian Type Foundry, under the SIL Open Font License (see `assets/fonts/OFL.txt`)
 
 ## 📄 License

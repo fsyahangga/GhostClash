@@ -66,7 +66,7 @@
   // Background music: one looping HTMLAudio outside the effects/voice mix. Default 5%; Settings turns it on/off and sets
   // its own volume (remembered on this device). Like every sound it starts only after the first user gesture, pauses in a
   // hidden tab, follows the master mute, and dips while the announcer or an ultimate voice is speaking.
-  const MUSIC_PATH = 'assets/audio/music/midday-showdown.mp3';
+  const MUSIC_PATH = 'assets/audio/music/malam-dedemit.mp3'; // synthesised pelog loop, guide/tools/build_dedemit_audio.py
   const prefs = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (_) { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
   let musicOn = prefs.get('aether.music', '1') !== '0', musicVolume = clamp(Number(prefs.get('aether.musicVolume', document.documentElement.classList.contains('touch') ? '5' : '15')) / 100 || 0, 0, 1), music = null;
   try { if (typeof Audio !== 'undefined') { music = new Audio(); music.loop = true; music.preload = 'none'; music.src = MUSIC_PATH; } } catch (_) { music = null; }

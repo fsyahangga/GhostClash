@@ -1,6 +1,6 @@
 /* First-visit loader. Before the menu opens, every runtime file in precache.js (built by tools/build_dist.mjs) is
    downloaded once behind a progress bar, so later screens never wait for pictures.
-   - Secure pages (https, localhost): files go into Cache Storage ('aether-assets') with their content hash. A later visit
+   - Secure pages (https, localhost): files go into Cache Storage ('dedemit-assets') with their content hash. A later visit
      only downloads files whose hash changed, and sw.js serves the pictures straight from that cache.
    - Plain http on a LAN IP (no Cache Storage / service worker there): the download still fills the browser's HTTP cache.
    - file:// or no list: nothing to do, the game boots as before.
@@ -23,7 +23,10 @@
   const INDEX = '__aether-index';
 
   async function run() {
-    const cache = secure ? await caches.open('aether-assets').catch(() => null) : null;
+    // The old Aether Clash cache is dropped first: an old service worker still in control answers pictures from it,
+    // so emptying it makes even that worker fetch the new files from the network.
+    if (secure) await caches.delete('aether-assets').catch(() => {});
+    const cache = secure ? await caches.open('dedemit-assets').catch(() => null) : null;
     let index = {};
     if (cache) { try { const hit = await cache.match(INDEX); if (hit) index = await hit.json(); } catch (_) { index = {}; } }
     const todo = [];

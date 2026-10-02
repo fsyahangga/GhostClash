@@ -50,4 +50,15 @@ Membangun ulang satu dedemit (butuh Python dengan Pillow dan numpy, serta Node.j
     python guide/tools/build_ghost_assets.py pocong
     node guide/tools/update_precache.mjs
 
-Yang masih bawaan Aether Clash: suara (announcer dan voice ultimate dimatikan untuk semua dedemit sampai ada rekaman baru; set `voice: true` di ghosts.js setelah file suaranya ditimpa).
+## Suara
+
+Semua suara baru disintesis dengan kode, bukan rekaman, oleh [build_dedemit_audio.py](tools/build_dedemit_audio.py) (butuh numpy, scipy, dan ffmpeg):
+
+- Musik latar **Malam Dedemit** (`assets/audio/music/malam-dedemit.mp3`): loop gamelan pelog sekitar 58 detik dengan gong ageng, kempul, kenong, slenthem, saron, dengung rendah, dan angin.
+- Suara ultimate tiap dedemit, ditulis ke file voice slot masing-masing (mis. `assets/isolde/audio/isolde-ultimate.mp3`): Pocong lompatan dan tali berderit, Kuntilanak cekikik melengking, Sundel Bolong ratapan, Wewe Gombel tawa nenek, Genderuwo geraman dan hentakan, Eyang Sukmo Capo gong dan dengung, Leyak kobaran api dan jeritan, Kuyang jeritan dan kepakan, Palasik isapan dan tawa rendah, Tuyul koin dan cekikik anak, Jenglot desis dan ketukan kuku, Begu Ganjang dengung yang meninggi.
+
+Rekaman suara asli bisa menggantikan file mana pun dengan path yang sama. Announcer (Round, Fight, K.O.) masih suara bahasa Inggris bawaan; klip yang menyebut nama karakter lama dimatikan (`announce: true` di ghosts.js menyalakannya lagi setelah klipnya diganti).
+
+## Cache browser
+
+Service worker dan loading screen memakai cache `dedemit-assets`. Unduhan ulang dari loading screen selalu ke jaringan, jadi gambar yang diganti langsung tampil setelah satu kali reload. Cache lama Aether Clash (`aether-assets`) dihapus otomatis.
