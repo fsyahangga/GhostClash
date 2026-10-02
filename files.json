@@ -1,34 +1,34 @@
 {
   "files": 280,
-  "bytes": 31388085,
+  "bytes": 31397959,
   "list": [
     {
       "file": "index.html",
-      "bytes": 12871
+      "bytes": 15295
     },
     {
       "file": "mobile.html",
-      "bytes": 3652
+      "bytes": 3718
     },
     {
       "file": "style.css",
-      "bytes": 25646
+      "bytes": 25747
     },
     {
       "file": "menu.css",
-      "bytes": 28652
+      "bytes": 28725
     },
     {
       "file": "preload.js",
-      "bytes": 4372
+      "bytes": 4441
     },
     {
       "file": "ghosts.js",
-      "bytes": 12470
+      "bytes": 12598
     },
     {
       "file": "dedemit.css",
-      "bytes": 6064
+      "bytes": 9830
     },
     {
       "file": "assets/menu/home-dedemit.webp",
@@ -48,15 +48,15 @@
     },
     {
       "file": "game.js",
-      "bytes": 170987
+      "bytes": 172739
     },
     {
       "file": "menu.js",
-      "bytes": 25033
+      "bytes": 26396
     },
     {
       "file": "match.js",
-      "bytes": 4348
+      "bytes": 4394
     },
     {
       "file": "announcer.js",
@@ -92,7 +92,7 @@
     },
     {
       "file": "isolde.js",
-      "bytes": 2715
+      "bytes": 2751
     },
     {
       "file": "rhea.js",
@@ -268,7 +268,7 @@
     },
     {
       "file": "assets/cora/manifest.js",
-      "bytes": 11515
+      "bytes": 11517
     },
     {
       "file": "assets/cora/run/sprite-sheet-alpha.webp",
@@ -324,7 +324,7 @@
     },
     {
       "file": "assets/edda/manifest.js",
-      "bytes": 12167
+      "bytes": 12169
     },
     {
       "file": "assets/edda/run/sprite-sheet-alpha.webp",
@@ -380,7 +380,7 @@
     },
     {
       "file": "assets/fenr/human/manifest.js",
-      "bytes": 11498
+      "bytes": 11500
     },
     {
       "file": "assets/fenr/human/run/sprite-sheet-alpha.webp",
@@ -452,7 +452,7 @@
     },
     {
       "file": "assets/fenr/wolf/manifest.js",
-      "bytes": 11517
+      "bytes": 11519
     },
     {
       "file": "assets/fenr/wolf/run/sprite-sheet-alpha.webp",
@@ -480,7 +480,7 @@
     },
     {
       "file": "assets/haldor/manifest.js",
-      "bytes": 11552
+      "bytes": 11554
     },
     {
       "file": "assets/haldor/run/sprite-sheet-alpha.webp",
@@ -540,7 +540,7 @@
     },
     {
       "file": "assets/isolde/manifest.js",
-      "bytes": 11861
+      "bytes": 11863
     },
     {
       "file": "assets/isolde/run/sprite-sheet-alpha.webp",
@@ -588,7 +588,7 @@
     },
     {
       "file": "assets/mecha/manifest.js",
-      "bytes": 11200
+      "bytes": 11202
     },
     {
       "file": "assets/mecha/run/sprite-sheet-alpha.webp",
@@ -676,7 +676,7 @@
     },
     {
       "file": "assets/mira/manifest.js",
-      "bytes": 11903
+      "bytes": 11905
     },
     {
       "file": "assets/mira/run/sprite-sheet-alpha.webp",
@@ -736,7 +736,7 @@
     },
     {
       "file": "assets/naja/manifest.js",
-      "bytes": 11501
+      "bytes": 11503
     },
     {
       "file": "assets/naja/run/sprite-sheet-alpha.webp",
@@ -796,7 +796,7 @@
     },
     {
       "file": "assets/nib/manifest.js",
-      "bytes": 11856
+      "bytes": 11858
     },
     {
       "file": "assets/nib/run/sprite-sheet-alpha.webp",
@@ -856,7 +856,7 @@
     },
     {
       "file": "assets/rhea/manifest.js",
-      "bytes": 11853
+      "bytes": 11855
     },
     {
       "file": "assets/rhea/run/sprite-sheet-alpha.webp",
@@ -956,7 +956,7 @@
     },
     {
       "file": "assets/solan/manifest.js",
-      "bytes": 11824
+      "bytes": 11826
     },
     {
       "file": "assets/solan/run/sprite-sheet-alpha.webp",
@@ -1068,7 +1068,7 @@
     },
     {
       "file": "assets/zanni/manifest.js",
-      "bytes": 11686
+      "bytes": 11688
     },
     {
       "file": "assets/zanni/run/sprite-sheet-alpha.webp",
@@ -1120,7 +1120,7 @@
     },
     {
       "file": "sw.js",
-      "bytes": 1774
+      "bytes": 1798
     }
   ]
 }
