@@ -2,7 +2,7 @@
 
 GHOST CLASH memakai engine Aether Clash apa adanya. Dua belas slot kit lama (`arco`, `fenr`, `mira`, …) tetap menjadi ID internal, dan setiap slot sekarang dimainkan oleh satu hantu yang legendanya paling cocok dengan gerakan slot itu. Semua nama, faksi, judul, nama skill, teks cut-in, dan status HUD berasal dari [ghosts.js](../ghosts.js). Damage, jangkauan, cooldown, dan CPU tidak diubah, jadi balance hasil benchmark lama tetap berlaku.
 
-Prompt gambar untuk setiap hantu ada di [ghost-prompts.md](ghost-prompts.md). Aturan pipeline sprite tetap mengikuti [character-workflow.md](character-workflow.md), [sprite-prompts.md](sprite-prompts.md), dan [sprite-qa.md](sprite-qa.md).
+Prompt gambar untuk setiap hantu ada di [ghost-prompts.md](ghost-prompts.md), dan lima arena hantu ada di [ghost-stages.md](ghost-stages.md). Aturan pipeline sprite tetap mengikuti [character-workflow.md](character-workflow.md), [sprite-prompts.md](sprite-prompts.md), dan [sprite-qa.md](sprite-qa.md).
 
 ## Pemetaan slot
 

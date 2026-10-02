@@ -38,6 +38,8 @@ GHOST CLASH is built on [Aether Clash](https://github.com/bangtutorial/aether-cl
 | **BLOODY MARY** — The Mirror Witch | Mancanegara | Inggris / AS | Pecahan Kaca | Cermin Seribu | `rhea` |
 | **DULLAHAN** — The Headless Rider | Mancanegara | Irlandia | Cambuk Rantai | Kereta Maut | `mira` |
 
+Arenas: **Rumah Kosong**, **Pabrik Gula Tua**, **Makam Kamboja**, **Hutan Larangan** and **Candi Purnama** (background art still to be generated, see [guide/ghost-stages.md](guide/ghost-stages.md)).
+
 Every ghost has a 3-hit basic chain, two skills and an ultimate with a full-screen cut-in. Modes: VS Computer (best of 3, four CPU levels) and Training.
 
 ## 🎮 Controls
@@ -140,6 +142,7 @@ The [`guide/`](guide/) folder holds the design and production notes behind the g
 | --- | --- |
 | **Ghost roster, slot mapping and asset swap** | [ghost-roster.md](guide/ghost-roster.md) |
 | **Image prompts for all 12 ghosts** | [ghost-prompts.md](guide/ghost-prompts.md) |
+| **Five haunted arenas and their background prompts** | [ghost-stages.md](guide/ghost-stages.md) |
 | Adding a new fighter, step by step | [character-workflow.md](guide/character-workflow.md) |
 | Shared gameplay rules (movement, combos, HP, cooldowns) | [gameplay-standard.md](guide/gameplay-standard.md) |
 | Sprite prompts, pipeline, QA and known issues | [sprite-prompts.md](guide/sprite-prompts.md), [sprite-pipeline.md](guide/sprite-pipeline.md), [sprite-qa.md](guide/sprite-qa.md), [sprite-known-issues.md](guide/sprite-known-issues.md) |

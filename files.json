@@ -1,6 +1,6 @@
 {
   "files": 278,
-  "bytes": 33886088,
+  "bytes": 33886350,
   "list": [
     {
       "file": "index.html",
@@ -36,7 +36,7 @@
     },
     {
       "file": "match.js",
-      "bytes": 4217
+      "bytes": 4479
     },
     {
       "file": "announcer.js",
